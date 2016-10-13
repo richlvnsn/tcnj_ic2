@@ -55,7 +55,7 @@ module spi_loader_test;
         clk = 0; 
         reset = 0; 
         miso = 0; 
-        spi_hready = 0;
+        spi_hready = 1;
         spi_hresp = 0;
         spi_hrdata = 0;
         
@@ -132,6 +132,12 @@ module spi_loader_test;
         #100 miso = 0; 
         
         #100 miso = 0; 
+        
+        // bits for cur_word_in, pipe_reg, spi_hwdata...
+        
+        #100 miso = 1;
+        
+        #100 miso = 0;
     end 
     always 
         #2.5  clk =  ! clk; //200 MHz master clock

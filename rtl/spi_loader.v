@@ -32,13 +32,13 @@ module spi_loader(
     output ss,
     output spien,
     output [31:0] spi_haddr,
-    output spi_hwrite,
+    output reg spi_hwrite,
     output [2:0] spi_hsize,
     output [2:0] spi_hburst,
     output spi_hmastlock,
     output [3:0] spi_hprot,
     output [1:0] spi_htrans,
-    output [32:0] spi_hwdata
+    output reg [31:0] spi_hwdata
     );
     
     ////////////////////////
@@ -90,6 +90,8 @@ module spi_loader(
     end
     
     reg [7:0]   cur_byte_in;
+    reg [31:0]  cur_word_in;
+    reg [31:0]  pipe_reg;
     reg [15:0]  parse_num_bytes;
     reg [15:0]  parse_start_addr;
     
@@ -99,8 +101,11 @@ module spi_loader(
         if (reset) 
         begin
             cur_byte_in <= 0;
+            cur_word_in <= 0;
+            pipe_reg <= 0;
             parse_num_bytes <= 0;
             parse_start_addr <= 0;
+            spi_hwrite <= 0;
         end else 
         begin
             if (spi_pipe_en)
@@ -114,9 +119,49 @@ module spi_loader(
                     parse_start_addr[7:0] <= cur_byte_in;   // Setting the lower byte of the half-word containing the data start address
                 else if (spi_bit_ctr == 56)
                     parse_start_addr[15:8] <= cur_byte_in;  // Setting the upper byte of the half-word containing the data start address
+                else if (spi_bit_ctr == 64)
+                    cur_word_in[7:0] <= cur_byte_in;        // Parsing the first word of data
+                else if (spi_bit_ctr == 72)
+                    cur_word_in[15:8] <= cur_byte_in;
+                else if (spi_bit_ctr == 80)
+                    cur_word_in[23:16] <= cur_byte_in;
+                else if (spi_bit_ctr == 88)
+                    cur_word_in[31:24] <= cur_byte_in;
+                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 0)) //Parsing words of data
+                begin
+                    cur_word_in[7:0] <= cur_byte_in;    // Parse lowest byte
+                    pipe_reg <= cur_word_in;            // Load pipeline register with previous word
+                    spi_hwrite <= 1;                    // Assert hwrite to begin basic AHB-Lite transfer
+                end
+                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 8))
+                    cur_word_in[15:8] <= cur_byte_in;   // Parse second byte
+                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 16))
+                    cur_word_in[23:16] <= cur_byte_in;  // Parse third byte
+                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 24))
+                    cur_word_in[31:24] <= cur_byte_in;  // Parse fourth byte
             end else
             begin
                 //prevent latching here...
+            end
+        end
+    end
+    
+    ////////////////////////
+    // AHB Interface
+    ////////////////////////
+    
+    always @ (posedge clk)
+    begin
+        if (reset)
+        begin
+            spi_hwdata <= 0;
+        end
+        else if (spi_hready)    // Wait for ready signal from slave
+        begin
+            if (spi_hwrite)     // Wait for write signal
+            begin
+                spi_hwdata <= pipe_reg; // Load write data from pipeline register
+                spi_hwrite <= 0;        // Deassert write signal
             end
         end
     end
