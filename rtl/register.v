@@ -67,9 +67,9 @@ module register(clk, rst_n, addr, r_wn, wdata, rdata);
                 if(r_wn); //if(wxfc & r_wn);
                 begin
                 case(addr)
-                     7'b0000000: begin
-                        rf_cname <= wdata;
-                    end
+                     7'b0000010: rf_output00 <= wdata;
+                     7'b0000011: rf_tristate00 <=wdata;
+                     7'b0000100: rf_pinstate00 <=wdata;
                 endcase
                 end
         end
