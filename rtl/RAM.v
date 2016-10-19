@@ -33,7 +33,7 @@ reg [31:0] data_out;
 
 always @(posedge clk) begin
     if (r_wn) begin
-        assign data_out = memory_array[address];
+        data_out = memory_array[address];
     end else begin
         memory_array[address] = data_in;
     end
