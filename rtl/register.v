@@ -44,15 +44,16 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
             rf_gpio_tristate <= 0; 
             rf_gpio_datareg <= 0;
             rf_gpio_interrupt_mask <= 0;
-        end else if (r_wn) //If read_writenot is true.
+        end else if (r_wn) //If Reading is enabled.
         begin
             case(addr)
-                5'b000: rdata <= ro_cname;
-                5'b001: rdata <= ro_cversion;
-                5'b010: rdata <= rf_gpio_tristate;
-                5'b011: rdata <= {16'b0, ro_gpio_pinstate}; //Pads with zeros to make 32bit
-                5'b100: rdata <= rf_gpio_interrupt_mask;
-                5'b101: rdata <= rf_scratch;
+                3'b000: rdata <= ro_cname;
+                3'b001: rdata <= ro_cversion;
+                3'b010: rdata <= {16'b0, rf_gpio_tristate};
+                3'b011: rdata <= {16'b0, ro_gpio_pinstate}; //Pads with zeros to make 32bit
+                3'b100: rdata <= {16'b0, rf_gpio_interrupt_mask};
+                3'b101: rdata <= {16'b0, rf_gpio_datareg};
+                3'b110: rdata <= rf_scratch;
             endcase
         end
 
@@ -63,23 +64,38 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
                 begin
                     rdata <= 0; //Initialize read data as 0
                 end   
-                if(r_wn)
-                begin
-                    if (wben[0])
-                        rf_gpio_tristate[7:0] <= wdata[7:0];
-                    if (wben[1])
-                        rf_gpio_tristate[15:8] <= wdata[15:8];
-                        
-                case(addr)
-                     5'b010: 
-                        if (wben[0])
-                            rf_gpio_tristate[7:0] <= wdata[7:0];
-                        if (wben[1])
-                            rf_gpio_tristate[15:8] <= wdata[15:8];
-                     
-                     5'b100: rf_gpio_interrupt_mask <= wdata;
-                     5'b101: rf_scratch <= wdata;
-                endcase
+                if(!r_wn)   //If Writing is enabled.
+                begin   
+                    case(addr)
+                        3'b010:
+                            if (wben[0])
+                                rf_gpio_tristate[7:0] <= wdata[7:0];
+                            if (wben[1])
+                                rf_gpio_tristate[15:8] <= wdata[15:8];
+
+                        3'b100:
+                            if (wben[0])
+                                rf_gpio_interrupt_mask[7:0] <= wdata[7:0];
+                            if (wben[1])
+                                rf_gpio_interrupt_mask[15:8] <= wdata[15:8];
+
+                        3'b101:
+                            if (wben[0])
+                                rf_gpio_datareg[7:0] <= wdata[7:0];
+                            if (wben[1])
+                                rf_gpio_datareg[15:8] <= wdata[15:8];
+
+                        3'b110:
+                            if (wben[0])
+                                rf_scratch[7:0] <= wdata[7:0];
+                            if (wben[1])
+                                rf_scratch[15:8] <= wdata[15:8];
+                            if (wben[2])
+                                rf_scratch[23:16] <= wdata[23:16];
+                            if (wben[3])
+                                rf_scratch[31:24] <= wdata[31:24];
+
+                    endcase
                 end
         end
 endmodule
