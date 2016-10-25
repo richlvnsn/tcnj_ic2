@@ -18,12 +18,12 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
     input clk;              //Master Clock
     input reset;            //Reset
     
-    input [4:2] addr;       //3 bits-wide register address
+    input [4:2] addr;       // 3 bits-wide register address
                             // Can address 8 register, each 32-bits (total register space is 32-bytes)
                             // One address specifies one 32-bit register
     input [ 3:0] wben;      // write byte enable bits                            
-    input [31:0] r_wn;      //Read-WriteNOT
-    input [31:0] wdata;     //the data to write
+    input r_wn;      // Read-WriteNOT
+    input [31:0] wdata;     // the data to write
     input [15:0] ro_gpio_pinstate; // Pin state input
     
     // Register outputs
