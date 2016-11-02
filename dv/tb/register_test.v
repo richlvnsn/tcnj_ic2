@@ -52,14 +52,22 @@ module register_test();
     initial
     begin
         clock = 0;
-        reset = 0;
+        reset = 1;
         addr = 0;
         wben = 0;
-        r_wn = 0;
+        r_wn = 1;
         wdata = 0;
         ro_gpio_pinstate = 0;
 
-        #50 //First Event
+        #50
+        reset = 0;
+
+        #100 //First Event
+        addr = 3'b000;
+
+        #100 //Second Event
+        addr = 3'b001;
+
     end
 
     always

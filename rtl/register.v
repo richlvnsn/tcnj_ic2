@@ -40,31 +40,32 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
     always @ (posedge clk)
     // This block controls reading data.
         if(reset)
-        begin
-            rf_gpio_tristate <= 0; 
-            rf_gpio_datareg <= 0;
-            rf_gpio_interrupt_mask <= 0;
-        end else if (r_wn) //If Reading is enabled.
-        begin
-            case(addr)
-                3'b000: rdata <= ro_cname;
-                3'b001: rdata <= ro_cversion;
-                3'b010: rdata <= {16'b0, rf_gpio_tristate};
-                3'b011: rdata <= {16'b0, ro_gpio_pinstate}; //Pads with zeros to make 32bit
-                3'b100: rdata <= {16'b0, rf_gpio_interrupt_mask};
-                3'b101: rdata <= {16'b0, rf_gpio_datareg};
-                3'b110: rdata <= rf_scratch;
-            endcase
-        end
+            begin
+                rf_gpio_tristate <= 0; 
+                rf_gpio_datareg <= 0;
+                rf_gpio_interrupt_mask <= 0;
+            end 
+        if (r_wn) //If Reading is enabled.
+            begin
+                case(addr)
+                    3'b000: rdata <= ro_cname;
+                    3'b001: rdata <= ro_cversion;
+                    3'b010: rdata <= {16'b0, rf_gpio_tristate};
+                    3'b011: rdata <= {16'b0, ro_gpio_pinstate}; //Pads with zeros to make 32bit
+                    3'b100: rdata <= {16'b0, rf_gpio_interrupt_mask};
+                    3'b101: rdata <= {16'b0, rf_gpio_datareg};
+                    3'b110: rdata <= rf_scratch;
+                endcase
+            end
 
     always @ (posedge clk)
     // This block controls writing data.
         begin
-            if (~reset)
+            if (reset)
                 begin
                     rdata <= 0; //Initialize read data as 0
                 end   
-                if(!r_wn)   //If Writing is enabled.
+            if(!r_wn)   //If Writing is enabled.
                 begin   
                     case(addr)
                         3'b010:
