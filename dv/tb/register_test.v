@@ -45,8 +45,8 @@ module register_test();
         .ro_gpio_pinstate(ro_gpio_pinstate),
         .rdata(rdata),
         .rf_gpio_tristate(rf_gpio_tristate),
-        .rf_gpio_datareg(.rf_gpio_datareg),
-        .rf_gpio_interrupt_mask(.rf_gpio_interrupt_mask)
+        .rf_gpio_datareg(rf_gpio_datareg),
+        .rf_gpio_interrupt_mask(rf_gpio_interrupt_mask)
         );
 
     initial

@@ -63,24 +63,31 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
                 begin   
                     case(addr)
                         3'b010:
+                            begin
                             if (wben[0])
                                 rf_gpio_tristate[7:0] <= wdata[7:0];
                             if (wben[1])
                                 rf_gpio_tristate[15:8] <= wdata[15:8];
+                            end
 
                         3'b100:
+                            begin
                             if (wben[0])
                                 rf_gpio_interrupt_mask[7:0] <= wdata[7:0];
                             if (wben[1])
                                 rf_gpio_interrupt_mask[15:8] <= wdata[15:8];
+                            end
 
                         3'b101:
+                            begin
                             if (wben[0])
                                 rf_gpio_datareg[7:0] <= wdata[7:0];
                             if (wben[1])
                                 rf_gpio_datareg[15:8] <= wdata[15:8];
+                            end
 
                         3'b110:
+                            begin
                             if (wben[0])
                                 rf_scratch[7:0] <= wdata[7:0];
                             if (wben[1])
@@ -89,9 +96,8 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
                                 rf_scratch[23:16] <= wdata[23:16];
                             if (wben[3])
                                 rf_scratch[31:24] <= wdata[31:24];
-
+                            end
                     endcase
                 end
-            end
         end
 endmodule
