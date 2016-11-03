@@ -21,8 +21,8 @@ input reset;            //Reset
 input [4:2] addr;       // 3 bits-wide register address
                         // Can address 8 register, each 32-bits (total register space is 32-bytes)
                         // One address specifies one 32-bit register
-input [ 3:0] wben;      // write byte enable bits                            
-input r_wn;      // Read-WriteNOT
+input [1:0] wben;			// write byte enable bits                            
+input r_wn;      			// Read-WriteNOT
 input [31:0] wdata;     // the data to write
 input [15:0] ro_gpio_pinstate; // Pin state input
 
@@ -89,9 +89,9 @@ always @(posedge clk)
                             rf_scratch[7:0] <= wdata[7:0];
                         if (wben[1])
                             rf_scratch[15:8] <= wdata[15:8];
-                        if (wben[2])
+                        if (wben == 2'b10)
                             rf_scratch[23:16] <= wdata[23:16];
-                        if (wben[3])
+                        if (wben == 2'b11)
                             rf_scratch[31:24] <= wdata[31:24];
                     end
                 endcase

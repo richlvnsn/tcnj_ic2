@@ -57,19 +57,63 @@ module register_test;
 	initial begin
 		// Initialize Inputs
 		clk = 0;
-		reset = 0;
+		reset = 1;
 		addr = 0;
 		wben = 0;
-		r_wn = 0;
+		r_wn = 1;
 		wdata = 0;
 		ro_gpio_pinstate = 0;
 
-		// Wait 100 ns for global reset to finish
-		#100;
-        
-		// Add stimulus here
-
+		#10
+		reset = 0;
+		
+		//Reading when Reading is Active
+		#50
+		addr = 3'b110;
+		
+		#50
+		//Writing when Reading is Active
+		wben = 0;
+		wdata = 32'b1000000000000001;
+		
+		#50
+		wben = 1;
+		
+		#50
+		wben = 2'b10;
+		
+		#50
+		wben = 2'b11;
+		
+		//Writing when Writing is Active
+		#50
+		r_wn = 0;
+		wben = 0;
+		wdata = 32'b11111111111111111001001001001001;
+		
+		#50
+		wben = 1;
+		
+		#50
+		wben = 2'b10;
+		
+		#50
+		wben = 2'b11;
+		
+//		//Return to reading
+//		#50
+//		r_wn = 1;
+//		
+//		#50
+//		reset = 1;
+//		
+//		#50
+//		reset = 0;
+		
 	end
+	
+	always
+	   #5 clk = !clk;
       
 endmodule
 
