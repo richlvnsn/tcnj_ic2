@@ -1,18 +1,18 @@
 `timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
-// Company: The College of New Jersey
-// Engineer: Hunter Dubel
+// Company: 
+// Engineer:
 //
-// Create Date:   12:26:10 04/30/2015
-// Design Name:   register_test
-// Module Name:   register_test.v
-// Project Name:  register_test
+// Create Date:   13:44:56 11/03/2016
+// Design Name:   register
+// Module Name:   C:/Xilinx/RegisterISE/register_test.v
+// Project Name:  RegisterISE
 // Target Device:  
 // Tool versions:  
 // Description: 
 //
-// Verilog Test Fixture created by ISE for module: register_test
+// Verilog Test Fixture created by ISE for module: register
 //
 // Dependencies:
 // 
@@ -22,56 +22,54 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module register_test();
+module register_test;
 
-    //Inputs
-    reg clock, reset;
-    reg [4:2] addr;
-    reg [3:0] wben;
-    reg [31:0] r_wn, wdata;
-    reg [15:0] ro_gpio_pinstate;
+	// Inputs
+	reg clk;
+	reg reset;
+	reg [4:2] addr;
+	reg [3:0] wben;
+	reg r_wn;
+	reg [31:0] wdata;
+	reg [15:0] ro_gpio_pinstate;
 
-    //Outputs
-    wire [31:0] rdata;
-    wire [15:0] rf_gpio_tristate, rf_gpio_datareg, rf_gpio_interrupt_mask;
-    
-    register uut(
-        .clock(clock),
-        .reset(reset),
-        .addr(addr),
-        .wben(wben),
-        .r_wn(r_wn),
-        .wdata(wdata),
-        .ro_gpio_pinstate(ro_gpio_pinstate),
-        .rdata(rdata),
-        .rf_gpio_tristate(rf_gpio_tristate),
-        .rf_gpio_datareg(rf_gpio_datareg),
-        .rf_gpio_interrupt_mask(rf_gpio_interrupt_mask)
-        );
+	// Outputs
+	wire [31:0] rdata;
+	wire [15:0] rf_gpio_datareg;
+	wire [15:0] rf_gpio_tristate;
+	wire [15:0] rf_gpio_interrupt_mask;
 
-    initial
-    begin
-        clock = 0;
-        reset = 1;
-        addr = 0;
-        wben = 0;
-        r_wn = 1;
-        wdata = 0;
-        ro_gpio_pinstate = 0;
+	// Instantiate the Unit Under Test (UUT)
+	register uut (
+		.clk(clk), 
+		.reset(reset), 
+		.addr(addr), 
+		.wben(wben), 
+		.r_wn(r_wn), 
+		.wdata(wdata), 
+		.ro_gpio_pinstate(ro_gpio_pinstate), 
+		.rdata(rdata), 
+		.rf_gpio_datareg(rf_gpio_datareg), 
+		.rf_gpio_tristate(rf_gpio_tristate), 
+		.rf_gpio_interrupt_mask(rf_gpio_interrupt_mask)
+	);
 
-        #50
-        reset = 0;
+	initial begin
+		// Initialize Inputs
+		clk = 0;
+		reset = 0;
+		addr = 0;
+		wben = 0;
+		r_wn = 0;
+		wdata = 0;
+		ro_gpio_pinstate = 0;
 
-        #100 //First Event
-        addr = 3'b000;
+		// Wait 100 ns for global reset to finish
+		#100;
+        
+		// Add stimulus here
 
-        #100 //Second Event
-        addr = 3'b001;
-
-    end
-
-    always
-        #5 clock = ! clock;
-
+	end
+      
 endmodule
 
