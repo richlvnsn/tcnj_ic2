@@ -18,10 +18,10 @@ module register(clk, reset, addr, wben, r_wn, wdata, ro_gpio_pinstate, rdata, rf
 input clk;              //Master Clock
 input reset;            //Reset
 
-input [4:2] addr;       // 3 bits-wide register address
+input [ 4:2] addr;       // 3 bits-wide register address
                         // Can address 8 register, each 32-bits (total register space is 32-bytes)
                         // One address specifies one 32-bit register
-input [1:0] wben;			// write byte enable bits                            
+input [ 1:0] wben;			// write byte enable bits                            
 input r_wn;      			// Read-WriteNOT
 input [31:0] wdata;     // the data to write
 input [15:0] ro_gpio_pinstate; // Pin state input
@@ -64,30 +64,30 @@ always @(posedge clk)
             begin   
                 case(addr)
                     3'b010: begin
-                        if (wben[0])
+                        if (wben == 2'b00)
                             rf_gpio_tristate[7:0] <= wdata[7:0];
-                        if (wben[1])
+                        if (wben == 2'b01)
                             rf_gpio_tristate[15:8] <= wdata[15:8];
                     end
 
                     3'b100: begin
-                        if (wben[0])
+                        if (wben == 2'b00)
                             rf_gpio_interrupt_mask[7:0] <= wdata[7:0];
-                        if (wben[1])
+                        if (wben == 2'b01)
                             rf_gpio_interrupt_mask[15:8] <= wdata[15:8];
                     end
 
                     3'b101: begin
-                        if (wben[0])
+                        if (wben == 2'b00)
                             rf_gpio_datareg[7:0] <= wdata[7:0];
-                        if (wben[1])
+                        if (wben == 2'b01)
                             rf_gpio_datareg[15:8] <= wdata[15:8];
                     end
 
                     3'b110: begin
-                        if (wben[0])
+                        if (wben == 2'b00)
                             rf_scratch[7:0] <= wdata[7:0];
-                        if (wben[1])
+                        if (wben == 2'b01)
                             rf_scratch[15:8] <= wdata[15:8];
                         if (wben == 2'b10)
                             rf_scratch[23:16] <= wdata[23:16];

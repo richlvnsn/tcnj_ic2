@@ -85,14 +85,17 @@ module register_test;
 		#50
 		wben = 2'b11;
 		
+		#50
+		wben = 2'b00;
+		
 		//Writing when Writing is Active
 		#50
 		r_wn = 0;
-		wben = 0;
+		wben = 2'b00;
 		wdata = 32'b11111111111111111001001001001001;
 		
 		#50
-		wben = 1;
+		wben = 2'b01;
 		
 		#50
 		wben = 2'b10;
@@ -100,15 +103,15 @@ module register_test;
 		#50
 		wben = 2'b11;
 		
-//		//Return to reading
-//		#50
-//		r_wn = 1;
-//		
-//		#50
-//		reset = 1;
-//		
-//		#50
-//		reset = 0;
+		//Return to reading
+		#50
+		r_wn = 1;
+		
+		#50
+		reset = 1;
+		
+		#50
+		reset = 0;
 		
 	end
 	
