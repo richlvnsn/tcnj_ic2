@@ -1,15 +1,13 @@
 `timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
+// Company: The College of New Jersey
+// Engineer: Hunter Dubel
 //
 // Create Date:   13:44:56 11/03/2016
 // Design Name:   register
 // Module Name:   C:/Xilinx/RegisterISE/register_test.v
 // Project Name:  RegisterISE
-// Target Device:  
-// Tool versions:  
 // Description: 
 //
 // Verilog Test Fixture created by ISE for module: register
@@ -72,7 +70,7 @@ module register_test;
 		addr = 3'b110;
 		
 		#50
-		//Writing when Reading is Active
+		//Attempt Writing when Reading is Active
 		wben = 0;
 		wdata = 32'b1000000000000001;
 		
@@ -88,7 +86,7 @@ module register_test;
 		#50
 		wben = 2'b00;
 		
-		//Writing when Writing is Active
+		//Writing when Writing is Active. Reading will not update the value.
 		#50
 		r_wn = 0;
 		wben = 2'b00;
@@ -103,10 +101,11 @@ module register_test;
 		#50
 		wben = 2'b11;
 		
-		//Return to reading
+		//Reading
 		#50
 		r_wn = 1;
 		
+		//Reset
 		#50
 		reset = 1;
 		
