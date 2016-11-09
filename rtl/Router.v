@@ -21,7 +21,7 @@
 
 
 module Router(
-    clk, reset,
+    clk, reset, SPI_change,
     // SPI Loader IOs
     spi_hready, spi_hrest, spi_hrdata, spi_haddr, spi_hwrite, spi_hsize, spi_hburst, spi_hmastlock, spi_hprot, spi_htrans, spi_hwdata,
     // RISC-V Core IOs (Instruction Memory)
@@ -36,7 +36,7 @@ module Router(
     data_read, data_write, data_addr, data_rwn
 );
 
-input clk, reset;
+input clk, reset, SPI_change;
 
 // SPI Loader IOs
 input [31:0] spi_haddr, spi_hwdata;
@@ -115,9 +115,20 @@ reg SPI_mode = 1;
 always @ (posedge clk) begin
     if (SPI_mode) begin
         // All code for SPI communication
-        inst_write = spi_hwdata;
-        inst_addr = spi_haddr;
-        inst_rwn = 0;
+        if (spi_haddr[15] == 0) begin
+            inst_write = spi_hwdata;
+            inst_addr = spi_haddr;
+            inst_rwn = 0;
+        end else begin
+            data_write = spi_hwdata;
+            data_addr = spi_haddr;
+            data_rwn = 0;
+        end
+        
+        // Checking to change modes
+        if (SPI_change == 1) begin
+            SPI_mode = 0;
+        end
     end else begin
         // All code for other forms of routing
         
