@@ -116,13 +116,19 @@ always @ (posedge clk) begin
     if (SPI_mode) begin
         // All code for SPI communication
         if (spi_haddr[15] == 0) begin
-            inst_write = spi_hwdata;
-            inst_addr = spi_haddr;
-            inst_rwn = 0;
+            if (spi_haddr[14] == 0) begin
+                inst_write = spi_hwdata;
+                inst_addr = spi_haddr[13:0];
+                inst_rwn = 0;
+            end else begin
+                data_write = spi_hwdata;
+                data_addr = spi_haddr[13:0];
+                data_rwn = 0;
+            end
         end else begin
-            data_write = spi_hwdata;
-            data_addr = spi_haddr;
-            data_rwn = 0;
+            reg_write = spi_hwdata;
+            reg_addr = spi_haddr[3:0];
+            reg_rwn = 0;
         end
         
         // Checking to change modes
