@@ -137,7 +137,21 @@ always @ (posedge clk) begin
         end
     end else begin
         // All code for other forms of routing
+        inst_addr = imem_haddr[13:0];
+        inst_rwn = 1;
+        imem_hrdata = inst_read;
         
+        if (dmem_haddr[15] == 0) begin
+            data_write = dmem_hwdata;
+            data_addr = dmem_haddr[13:0];
+            data_rwn = !dmem_hwrite;
+            dmem_hrdata = data_read;
+        end else begin
+            reg_write = dmem_hwdata;
+            reg_addr = dmem_haddr[3:0];
+            reg_rwn = !dmem_hwrite;
+            dmem_hrdata = reg_read;
+        end
     end
 end
 
