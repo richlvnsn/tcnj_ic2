@@ -152,6 +152,11 @@ always @ (posedge clk) begin
             reg_rwn = !dmem_hwrite;
             dmem_hrdata = reg_read;
         end
+        
+        // Checking for reset
+        if (reset) begin
+            SPI_mode = 1;
+        end
     end
 end
 
