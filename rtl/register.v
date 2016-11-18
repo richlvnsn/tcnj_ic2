@@ -63,7 +63,7 @@ always @(posedge clk)
             begin   
                 case(addr)
                     3'b010: begin
-                        if (wben[0]
+                        if (wben[0])
                             rf_gpio_tristate[7:0] <= wdata[7:0];
                         if (wben[1])
                             rf_gpio_tristate[15:8] <= wdata[15:8];
@@ -88,7 +88,7 @@ always @(posedge clk)
                             rf_scratch[7:0] <= wdata[7:0];
                         if (wben[1])
                             rf_scratch[15:8] <= wdata[15:8];
-                        if (wben[2]
+                        if (wben[2])
                             rf_scratch[23:16] <= wdata[23:16];
                         if (wben[3])
                             rf_scratch[31:24] <= wdata[31:24];

@@ -75,13 +75,13 @@ module register_test;
 		wdata = 32'b1000000000000001;
 		
 		#50
-		wben = 1;
+		wben = 0;
 		
 		#50
-		wben = 2;
+		wben = 0;
 		
 		#50
-		wben = 3;
+		wben = wben[3];
 		
 		#50
 		wben = 0;
