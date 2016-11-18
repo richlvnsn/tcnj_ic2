@@ -78,13 +78,13 @@ module register_test;
 		wben = 1;
 		
 		#50
-		wben = 2'b10;
+		wben = 2;
 		
 		#50
-		wben = 2'b11;
+		wben = 3;
 		
 		#50
-		wben = 2'b00;
+		wben = 0;
 		
 		//Writing when Writing is Active. Reading will not update the value.
 		#50
