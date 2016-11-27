@@ -129,37 +129,37 @@ module spi_loader(
         begin
             if (spi_pipe_en)
             begin
-                cur_byte_in[spi_bit_ctr & 8'h7] <= miso;    // De-serializing into bytes
-                if (spi_bit_ctr == 32)
+                cur_byte_in[7 - ((spi_bit_ctr - 1) & 8'h7)] <= miso;    // De-serializing into bytes
+                if (spi_bit_ctr == (32 + 1))
                     parse_num_bytes[7:0] <= cur_byte_in;    // Setting the lower byte of the half-word containing the number of bytes of data to read
-                else if (spi_bit_ctr == 40)
+                else if (spi_bit_ctr == (40 + 1))
                     parse_num_bytes[15:8] <= cur_byte_in;   // Setting the upper byte of the half-word containing the number of bytes of data to read
-                else if (spi_bit_ctr == 48)
+                else if (spi_bit_ctr == (48 + 1))
                     parse_start_addr[7:0] <= cur_byte_in;   // Setting the lower byte of the half-word containing the data start address
-                else if (spi_bit_ctr == 56)
+                else if (spi_bit_ctr == (56 + 1))
                     parse_start_addr[15:8] <= cur_byte_in;  // Setting the upper byte of the half-word containing the data start address
-                else if (spi_bit_ctr == 64)
+                else if (spi_bit_ctr == (64 + 1))
                     cur_word_in[7:0] <= cur_byte_in;        // Parsing the first word of data
-                else if (spi_bit_ctr == 72)
+                else if (spi_bit_ctr == (72 + 1))
                     cur_word_in[15:8] <= cur_byte_in;
-                else if (spi_bit_ctr == 80)
+                else if (spi_bit_ctr == (80 + 1))
                     cur_word_in[23:16] <= cur_byte_in;
-                else if (spi_bit_ctr == 88)
+                else if (spi_bit_ctr == (88 + 1))
                 begin
                     cur_word_in[31:24] <= cur_byte_in;
                 end
-                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 0)) //Parsing words of data
+                else if ((spi_bit_ctr > (88 + 1)) && ((spi_bit_ctr-1) % 32 == 0)) //Parsing words of data
                 begin
                     cur_word_in[7:0] <= cur_byte_in;    // Parse lowest byte
                     pipe_reg <= cur_word_in;            // Load pipeline register with previous word
                     spi_hwrite <= 1;                    // Assert hwrite to begin basic AHB-Lite transfer
                     spi_haddr <= spi_haddr + 4;
                 end
-                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 8))
+                else if ((spi_bit_ctr > (88 + 1)) && ((spi_bit_ctr-1) % 32 == 8))
                     cur_word_in[15:8] <= cur_byte_in;   // Parse second byte
-                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 16))
+                else if ((spi_bit_ctr > (88 + 1)) && ((spi_bit_ctr-1) % 32 == 16))
                     cur_word_in[23:16] <= cur_byte_in;  // Parse third byte
-                else if ((spi_bit_ctr > 88) && (spi_bit_ctr % 32 == 24))
+                else if ((spi_bit_ctr > (88 + 1)) && ((spi_bit_ctr-1) % 32 == 24))
                 begin
                     cur_word_in[31:24] <= cur_byte_in;  // Parse fourth byte
                 end
