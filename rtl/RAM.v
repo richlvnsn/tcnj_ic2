@@ -25,8 +25,8 @@ module RAM(clk, r_wn, address, data_in, data_out);
 input clk;
 input r_wn;
 input [11:0] address;
-input [31:0] data_in;
-output [31:0] data_out;
+input [7:0] data_in;
+output [7:0] data_out;
 
 reg [7:0] memory_array [0:4095];
 reg [7:0] data_out;
