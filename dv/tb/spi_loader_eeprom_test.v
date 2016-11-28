@@ -71,7 +71,7 @@ module spi_loader_test;
     begin 
         $readmemh("M95XXX_Initial.dat",U_M95XXX.memory);
         clk = 0; 
-        reset = 0; 
+        reset = 1; 
         spi_hready = 1;
         spi_hresp = 0;
         spi_hrdata = 0;
@@ -80,8 +80,8 @@ module spi_loader_test;
         vcc = 1;
         vss = 0;
         
-        #1 reset = 1;
-        #5 reset = 0;
+        #1 reset = 0;
+        #5 reset = 1;
         
     end 
     always 

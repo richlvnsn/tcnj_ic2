@@ -50,10 +50,10 @@ module spi_loader(
     reg _mosi;
     
     assign spi_pipe_en = (spi_div_ctr == 0);
-    //assign spi_clk = (spi_div_ctr < 10);
     
+    // Update SPI clk, mosi, and SPI select (ss)
     always @ (posedge clk)
-        if (reset)
+        if (!reset)
         begin
             spi_clk <= 1;
             mosi <= 0;
@@ -63,14 +63,13 @@ module spi_loader(
         begin
             spi_clk <= (spi_div_ctr < 10);
             mosi <= _mosi;
-            if (spi_bit_ctr <= 1)
-                ss <= 0;
+            ss <= 0;
         end 
     
     // Counter used to divide the master clock by 20
     always @(posedge clk) 
     begin
-        if (reset)
+        if (!reset)
         begin
             spi_div_ctr <= 0;
         end else if (spi_div_ctr < 19)
@@ -85,7 +84,7 @@ module spi_loader(
     // Counter used to track the number of bits sent/received over the SPI EEPROM
     always @ (posedge clk)
     begin
-        if (reset) 
+        if (!reset) 
         begin
             spi_bit_ctr <= 0;
         end else
@@ -98,7 +97,7 @@ module spi_loader(
     // Sends the READ instruction to the EEPROM
     always @ (posedge clk)
     begin
-        if (reset)
+        if (!reset)
             _mosi <= 0;
         else if (spi_pipe_en)
             if (spi_bit_ctr < 8)
@@ -116,7 +115,7 @@ module spi_loader(
     // De-serializes and processes input data
     always @ (posedge clk)
     begin
-        if (reset) 
+        if (!reset) 
         begin
             cur_byte_in <= 0;
             cur_word_in <= 0;
@@ -182,7 +181,7 @@ module spi_loader(
     
     always @ (posedge clk)
     begin
-        if (reset)
+        if (!reset)
         begin
             spi_hwdata <= 0;
         end
