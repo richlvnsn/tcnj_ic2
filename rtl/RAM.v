@@ -28,8 +28,8 @@ input [11:0] address;
 input [31:0] data_in;
 output [31:0] data_out;
 
-reg [31:0] memory_array [0:4095];
-reg [31:0] data_out;
+reg [7:0] memory_array [0:4095];
+reg [7:0] data_out;
 
 always @(posedge clk) begin
     if (r_wn) begin
