@@ -75,16 +75,16 @@ module register_test;
 		wdata = 32'b1000000000000001;
 		
 		#50
-		wben = 1;
+		wben = 0;
 		
 		#50
-		wben = 2'b10;
+		wben = 0;
 		
 		#50
-		wben = 2'b11;
+		wben = wben[3];
 		
 		#50
-		wben = 2'b00;
+		wben = 0;
 		
 		//Writing when Writing is Active. Reading will not update the value.
 		#50
