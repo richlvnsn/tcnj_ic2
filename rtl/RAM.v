@@ -1,22 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// The College of New Jersey
+// Engineer: Dan Sarnelli
 // 
 // Create Date: 10/05/2016 10:18:20 PM
-// Design Name: 
 // Module Name: RAM
-// Project Name: Front-End Design for RISC-V based Chip
-// Target Devices: 
-// Tool Versions: 
-// Description: RAM to be used for instruction and data memory.
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Project Name: RISC-V ASIC Microcontroller
+// Target Devices: Artix-7 Nexys 4
 //////////////////////////////////////////////////////////////////////////////////
 
 
