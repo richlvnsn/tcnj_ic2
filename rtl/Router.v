@@ -156,6 +156,10 @@ always @ (posedge clk) begin
                             3'b010: inst_wben = 4'b1111;
                             default: inst_wben = 4'b1111;
                         endcase
+                        
+                        // Responding to the buses
+                        imem_hready = 1;
+                        dmem_hready = 0;
                     end else begin
                         // DMEM AHB to instruction communication
                         inst_addr = dmem_haddr[13:0];
@@ -169,6 +173,10 @@ always @ (posedge clk) begin
                             3'b010: inst_wben = 4'b1111;
                             default: inst_wben = 4'b1111;
                         endcase
+                        
+                        // Responding to the buses
+                        imem_hready = 0;
+                        dmem_hready = 1;
                     end
                     
                     // Switch arbitration mode
@@ -188,6 +196,10 @@ always @ (posedge clk) begin
                             3'b010: data_wben = 4'b1111;
                             default: data_wben = 4'b1111;
                         endcase
+                        
+                        // Responding to the buses
+                        imem_hready = 0;
+                        dmem_hready = 1;
                     end else begin
                         // IMEM AHB to data communication
                         data_addr = imem_haddr[13:0];
@@ -201,6 +213,10 @@ always @ (posedge clk) begin
                             3'b010: data_wben = 4'b1111;
                             default: data_wben = 4'b1111;
                         endcase
+                        
+                        // Responding to the buses
+                        imem_hready = 1;
+                        dmem_hready = 0;
                     end
                     
                     // Switch arbitration mode
@@ -221,6 +237,10 @@ always @ (posedge clk) begin
                         3'b010: reg_wben = 4'b1111;
                         default: reg_wben = 4'b1111;
                     endcase
+                    
+                    // Responding to the buses
+                    imem_hready = 0;
+                    dmem_hready = 1;
                 end else begin
                     // IMEM AHB to register communication
                     reg_addr = imem_haddr[13:0];
@@ -234,11 +254,19 @@ always @ (posedge clk) begin
                         3'b010: reg_wben = 4'b1111;
                         default: reg_wben = 4'b1111;
                     endcase
+                    
+                    // Responding to the buses
+                    imem_hready = 1;
+                    dmem_hready = 0;
                 end
                 
                 // Switch arbitration mode
                 favor_reg = !favor_reg;
             end
+            
+            // Assuming the signal response is always OK
+            imem_hresp = 0;
+            dmem_hresp = 0;
         end else begin
             // Instruction Memory bus routing
             if (imem_htrans == 2'b10) begin
@@ -337,8 +365,11 @@ always @ (posedge clk) begin
             end
             
             // When not arbitrating, ready and resp should always be OK
-            spi_hready = 1;
-            spi_hresp = 0;
+            imem_hready = 1;
+            imem_hresp = 0;
+            
+            dmem_hready = 1;
+            dmem_hresp = 0;
         end
         
         // Checking for reset
