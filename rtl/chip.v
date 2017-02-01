@@ -1,22 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// The College of New Jersey
+// Engineer: Dan Sarnelli
 // 
 // Create Date: 11/16/2016 04:58:54 PM
-// Design Name: 
 // Module Name: chip
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Project Name: RISC-V ASIC Microcontroller
+// Target Devices: Artix-7 Nexys 4
 //////////////////////////////////////////////////////////////////////////////////
 
 

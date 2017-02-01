@@ -1,15 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: The College of New Jersey
+// The College of New Jersey
 // Engineer: Hunter Dubel
 //
 // Create Date: 10/09/2016 08:44:25 PM
 // Module Name: register
 // Project Name: RISC-V ASIC Microcontroller
 // Target Devices: Artix-7 Nexys 4
-// Description:
-// Revision:
-// Revision 0.01 - File Created
 //////////////////////////////////////////////////////////////////////////////////
  
  
