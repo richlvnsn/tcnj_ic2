@@ -115,27 +115,27 @@ always @ (posedge clk) begin
         // All code for SPI communication
         if (spi_haddr[15] == 0) begin
             if (spi_haddr[14] == 0) begin
-                inst_write = spi_hwdata;
-                inst_addr = spi_haddr[13:0];
-                inst_rwn = 0;
+                inst_write <= spi_hwdata;
+                inst_addr <= spi_haddr[13:0];
+                inst_rwn <= 0;
             end else begin
-                data_write = spi_hwdata;
-                data_addr = spi_haddr[13:0];
-                data_rwn = 0;
+                data_write <= spi_hwdata;
+                data_addr <= spi_haddr[13:0];
+                data_rwn <= 0;
             end
         end else begin
-            reg_write = spi_hwdata;
-            reg_addr = spi_haddr[3:0];
-            reg_rwn = 0;
+            reg_write <= spi_hwdata;
+            reg_addr <= spi_haddr[3:0];
+            reg_rwn <= 0;
         end
         
         // In this mode, the router should always be ready for a transfer and should always be OK
-        spi_hready = 1;
-        spi_hresp = 0;
+        spi_hready <= 1;
+        spi_hresp <= 0;
         
         // Checking to change modes
         if (SPI_change == 1) begin
-            SPI_mode = 0;
+            SPI_mode <= 0;
         end
     end else begin
         // Checking if arbitration is necessary
@@ -145,128 +145,128 @@ always @ (posedge clk) begin
                     // Instruction memory arbitration
                     if (favor_imem) begin
                         // IMEM AHB to instruction communication
-                        inst_addr = imem_haddr[13:0];
-                        inst_write = imem_hwdata;
-                        inst_rwn = !imem_hwrite;
-                        imem_hrdata = inst_read;
+                        inst_addr <= imem_haddr[13:0];
+                        inst_write <= imem_hwdata;
+                        inst_rwn <= !imem_hwrite;
+                        imem_hrdata <= inst_read;
                         
                         case (imem_hsize)
-                            3'b000: inst_wben = 4'b0001;
-                            3'b001: inst_wben = 4'b0011;
-                            3'b010: inst_wben = 4'b1111;
-                            default: inst_wben = 4'b1111;
+                            3'b000: inst_wben <= 4'b0001;
+                            3'b001: inst_wben <= 4'b0011;
+                            3'b010: inst_wben <= 4'b1111;
+                            default: inst_wben <= 4'b1111;
                         endcase
                         
                         // Responding to the buses
-                        imem_hready = 1;
-                        dmem_hready = 0;
+                        imem_hready <= 1;
+                        dmem_hready <= 0;
                     end else begin
                         // DMEM AHB to instruction communication
-                        inst_addr = dmem_haddr[13:0];
-                        inst_write = dmem_hwdata;
-                        inst_rwn = !dmem_hwrite;
-                        dmem_hrdata = inst_read;
+                        inst_addr <= dmem_haddr[13:0];
+                        inst_write <= dmem_hwdata;
+                        inst_rwn <= !dmem_hwrite;
+                        dmem_hrdata <= inst_read;
                         
                         case (dmem_hsize)
-                            3'b000: inst_wben = 4'b0001;
-                            3'b001: inst_wben = 4'b0011;
-                            3'b010: inst_wben = 4'b1111;
-                            default: inst_wben = 4'b1111;
+                            3'b000: inst_wben <= 4'b0001;
+                            3'b001: inst_wben <= 4'b0011;
+                            3'b010: inst_wben <= 4'b1111;
+                            default: inst_wben <= 4'b1111;
                         endcase
                         
                         // Responding to the buses
-                        imem_hready = 0;
-                        dmem_hready = 1;
+                        imem_hready <= 0;
+                        dmem_hready <= 1;
                     end
                     
                     // Switch arbitration mode
-                    favor_imem = !favor_imem;
+                    favor_imem <= !favor_imem;
                 end else begin
                     // Data memory arbitration
                     if (favor_dmem) begin
                         // DMEM AHB to data communication
-                        data_addr = dmem_haddr[13:0];
-                        data_write = dmem_hwdata;
-                        data_rwn = !dmem_hwrite;
-                        dmem_hrdata = data_read;
+                        data_addr <= dmem_haddr[13:0];
+                        data_write <= dmem_hwdata;
+                        data_rwn <= !dmem_hwrite;
+                        dmem_hrdata <= data_read;
                         
                         case (dmem_hsize)
-                            3'b000: data_wben = 4'b0001;
-                            3'b001: data_wben = 4'b0011;
-                            3'b010: data_wben = 4'b1111;
-                            default: data_wben = 4'b1111;
+                            3'b000: data_wben <= 4'b0001;
+                            3'b001: data_wben <= 4'b0011;
+                            3'b010: data_wben <= 4'b1111;
+                            default: data_wben <= 4'b1111;
                         endcase
                         
                         // Responding to the buses
-                        imem_hready = 0;
-                        dmem_hready = 1;
+                        imem_hready <= 0;
+                        dmem_hready <= 1;
                     end else begin
                         // IMEM AHB to data communication
-                        data_addr = imem_haddr[13:0];
-                        data_write = imem_hwdata;
-                        data_rwn = !imem_hwrite;
-                        imem_hrdata = data_read;
+                        data_addr <= imem_haddr[13:0];
+                        data_write <= imem_hwdata;
+                        data_rwn <= !imem_hwrite;
+                        imem_hrdata <= data_read;
                         
                         case (imem_hsize)
-                            3'b000: data_wben = 4'b0001;
-                            3'b001: data_wben = 4'b0011;
-                            3'b010: data_wben = 4'b1111;
-                            default: data_wben = 4'b1111;
+                            3'b000: data_wben <= 4'b0001;
+                            3'b001: data_wben <= 4'b0011;
+                            3'b010: data_wben <= 4'b1111;
+                            default: data_wben <= 4'b1111;
                         endcase
                         
                         // Responding to the buses
-                        imem_hready = 1;
-                        dmem_hready = 0;
+                        imem_hready <= 1;
+                        dmem_hready <= 0;
                     end
                     
                     // Switch arbitration mode
-                    favor_dmem = !favor_dmem;
+                    favor_dmem <= !favor_dmem;
                 end
             end else begin
                 // Register arbitration
                 if (favor_reg) begin
                     // DMEM AHB to register communication
-                    reg_addr = dmem_haddr[13:0];
-                    reg_write = dmem_hwdata;
-                    reg_rwn = !dmem_hwrite;
-                    dmem_hrdata = reg_read;
+                    reg_addr <= dmem_haddr[13:0];
+                    reg_write <= dmem_hwdata;
+                    reg_rwn <= !dmem_hwrite;
+                    dmem_hrdata <= reg_read;
                     
                     case (dmem_hsize)
-                        3'b000: reg_wben = 4'b0001;
-                        3'b001: reg_wben = 4'b0011;
-                        3'b010: reg_wben = 4'b1111;
-                        default: reg_wben = 4'b1111;
+                        3'b000: reg_wben <= 4'b0001;
+                        3'b001: reg_wben <= 4'b0011;
+                        3'b010: reg_wben <= 4'b1111;
+                        default: reg_wben <= 4'b1111;
                     endcase
                     
                     // Responding to the buses
-                    imem_hready = 0;
-                    dmem_hready = 1;
+                    imem_hready <= 0;
+                    dmem_hready <= 1;
                 end else begin
                     // IMEM AHB to register communication
-                    reg_addr = imem_haddr[13:0];
-                    reg_write = imem_hwdata;
-                    reg_rwn = !imem_hwrite;
-                    imem_hrdata = reg_read;
+                    reg_addr <= imem_haddr[13:0];
+                    reg_write <= imem_hwdata;
+                    reg_rwn <= !imem_hwrite;
+                    imem_hrdata <= reg_read;
                     
                     case (imem_hsize)
-                        3'b000: reg_wben = 4'b0001;
-                        3'b001: reg_wben = 4'b0011;
-                        3'b010: reg_wben = 4'b1111;
-                        default: reg_wben = 4'b1111;
+                        3'b000: reg_wben <= 4'b0001;
+                        3'b001: reg_wben <= 4'b0011;
+                        3'b010: reg_wben <= 4'b1111;
+                        default: reg_wben <= 4'b1111;
                     endcase
                     
                     // Responding to the buses
-                    imem_hready = 1;
-                    dmem_hready = 0;
+                    imem_hready <= 1;
+                    dmem_hready <= 0;
                 end
                 
                 // Switch arbitration mode
-                favor_reg = !favor_reg;
+                favor_reg <= !favor_reg;
             end
             
             // Assuming the signal response is always OK
-            imem_hresp = 0;
-            dmem_hresp = 0;
+            imem_hresp <= 0;
+            dmem_hresp <= 0;
         end else begin
             // Instruction Memory bus routing
             if (imem_htrans == 2'b10) begin
@@ -275,43 +275,43 @@ always @ (posedge clk) begin
                     // Checking for instruction or data communication
                     if (imem_haddr[14] == 0) begin
                         // Instruction communication
-                        inst_addr = imem_haddr[13:0];
-                        inst_write = imem_hwdata;
-                        inst_rwn = !imem_hwrite;
-                        imem_hrdata = inst_read;
+                        inst_addr <= imem_haddr[13:0];
+                        inst_write <= imem_hwdata;
+                        inst_rwn <= !imem_hwrite;
+                        imem_hrdata <= inst_read;
                         
                         case (imem_hsize)
-                            3'b000: inst_wben = 4'b0001;
-                            3'b001: inst_wben = 4'b0011;
-                            3'b010: inst_wben = 4'b1111;
-                            default: inst_wben = 4'b1111;
+                            3'b000: inst_wben <= 4'b0001;
+                            3'b001: inst_wben <= 4'b0011;
+                            3'b010: inst_wben <= 4'b1111;
+                            default: inst_wben <= 4'b1111;
                         endcase
                     end else begin
                         // Data communication
-                        data_addr = imem_haddr[13:0];
-                        data_write = imem_hwdata;
-                        data_rwn = !imem_hwrite;
-                        imem_hrdata = data_read;
+                        data_addr <= imem_haddr[13:0];
+                        data_write <= imem_hwdata;
+                        data_rwn <= !imem_hwrite;
+                        imem_hrdata <= data_read;
                         
                         case (imem_hsize)
-                            3'b000: data_wben = 4'b0001;
-                            3'b001: data_wben = 4'b0011;
-                            3'b010: data_wben = 4'b1111;
-                            default: data_wben = 4'b1111;
+                            3'b000: data_wben <= 4'b0001;
+                            3'b001: data_wben <= 4'b0011;
+                            3'b010: data_wben <= 4'b1111;
+                            default: data_wben <= 4'b1111;
                         endcase
                     end
                 end else begin
                     // Register communication
-                    reg_addr = imem_haddr[2:0];
-                    reg_write = imem_hwdata;
-                    reg_rwn = !imem_hwrite;
-                    imem_hrdata = reg_read;
+                    reg_addr <= imem_haddr[2:0];
+                    reg_write <= imem_hwdata;
+                    reg_rwn <= !imem_hwrite;
+                    imem_hrdata <= reg_read;
                     
                     case (imem_hsize)
-                        3'b000: reg_wben = 4'b0001;
-                        3'b001: reg_wben = 4'b0011;
-                        3'b010: reg_wben = 4'b1111;
-                        default: reg_wben = 4'b1111;
+                        3'b000: reg_wben <= 4'b0001;
+                        3'b001: reg_wben <= 4'b0011;
+                        3'b010: reg_wben <= 4'b1111;
+                        default: reg_wben <= 4'b1111;
                     endcase
                 end
             end
@@ -323,58 +323,58 @@ always @ (posedge clk) begin
                     // Checking for instruction or data communication
                     if (dmem_haddr[14] == 0) begin
                         // Instruction communication
-                        inst_addr = dmem_haddr[13:0];
-                        inst_write = dmem_hwdata;
-                        inst_rwn = !dmem_hwrite;
-                        dmem_hrdata = inst_read;
+                        inst_addr <= dmem_haddr[13:0];
+                        inst_write <= dmem_hwdata;
+                        inst_rwn <= !dmem_hwrite;
+                        dmem_hrdata <= inst_read;
                         
                         case (dmem_hsize)
-                            3'b000: inst_wben = 4'b0001;
-                            3'b001: inst_wben = 4'b0011;
-                            3'b010: inst_wben = 4'b1111;
-                            default: inst_wben = 4'b1111;
+                            3'b000: inst_wben <= 4'b0001;
+                            3'b001: inst_wben <= 4'b0011;
+                            3'b010: inst_wben <= 4'b1111;
+                            default: inst_wben <= 4'b1111;
                         endcase
                     end else begin
                         // Data communication
-                        data_addr = dmem_haddr[13:0];
-                        data_write = dmem_hwdata;
-                        data_rwn = !dmem_hwrite;
-                        dmem_hrdata = data_read;
+                        data_addr <= dmem_haddr[13:0];
+                        data_write <= dmem_hwdata;
+                        data_rwn <= !dmem_hwrite;
+                        dmem_hrdata <= data_read;
                         
                         case (dmem_hsize)
-                            3'b000: data_wben = 4'b0001;
-                            3'b001: data_wben = 4'b0011;
-                            3'b010: data_wben = 4'b1111;
-                            default: data_wben = 4'b1111;
+                            3'b000: data_wben <= 4'b0001;
+                            3'b001: data_wben <= 4'b0011;
+                            3'b010: data_wben <= 4'b1111;
+                            default: data_wben <= 4'b1111;
                         endcase
                     end
                 end else begin
                     // Register communication
-                    reg_addr = dmem_haddr[2:0];
-                    reg_write = dmem_hwdata;
-                    reg_rwn = !dmem_hwrite;
-                    dmem_hrdata = reg_read;
+                    reg_addr <= dmem_haddr[2:0];
+                    reg_write <= dmem_hwdata;
+                    reg_rwn <= !dmem_hwrite;
+                    dmem_hrdata <= reg_read;
                     
                     case (dmem_hsize)
-                        3'b000: reg_wben = 4'b0001;
-                        3'b001: reg_wben = 4'b0011;
-                        3'b010: reg_wben = 4'b1111;
-                        default: reg_wben = 4'b1111;
+                        3'b000: reg_wben <= 4'b0001;
+                        3'b001: reg_wben <= 4'b0011;
+                        3'b010: reg_wben <= 4'b1111;
+                        default: reg_wben <= 4'b1111;
                     endcase
                 end
             end
             
             // When not arbitrating, ready and resp should always be OK
-            imem_hready = 1;
-            imem_hresp = 0;
+            imem_hready <= 1;
+            imem_hresp <= 0;
             
-            dmem_hready = 1;
-            dmem_hresp = 0;
+            dmem_hready <= 1;
+            dmem_hresp <= 0;
         end
         
         // Checking for reset
         if (reset) begin
-            SPI_mode = 1;
+            SPI_mode <= 1;
         end
     end
 end
