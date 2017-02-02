@@ -15,7 +15,7 @@ input clk;                                  //Master Clock
 input reset;                                //Reset
 
 input [ 5:2] addr;                          // 4 bits-wide register address
-                                            // Can address 12 register, each 32-bits (total register space is 32-bytes)
+                                            // Can address 16 register, each 32-bits (total register space is 32-bytes)
                                             // One address specifies one 32-bit register
 input [ 3:0] wben;			                // write byte enable bits                            
 input r_wn;      			                // Read-WriteNOT

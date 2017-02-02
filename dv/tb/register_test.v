@@ -15,17 +15,23 @@ module register_test;
 	// Inputs
 	reg clk;
 	reg reset;
-	reg [4:2] addr;
+	reg [5:2] addr;
 	reg [3:0] wben;
 	reg r_wn;
 	reg [31:0] wdata;
 	reg [15:0] ro_gpio_pinstate;
+	reg ro_mode;
+	reg [31:0] ro_termcount;
 
 	// Outputs
 	wire [31:0] rdata;
 	wire [15:0] rf_gpio_datareg;
 	wire [15:0] rf_gpio_tristate;
 	wire [15:0] rf_gpio_interrupt_mask;
+	wire rf_trig_start;
+	wire rf_trig_halt;
+	wire rf_status;
+	wire [31:0] rf_currcount;
 	
 	integer count;
 
@@ -37,11 +43,17 @@ module register_test;
 		.wben(wben), 
 		.r_wn(r_wn), 
 		.wdata(wdata), 
-		.ro_gpio_pinstate(ro_gpio_pinstate), 
+		.ro_gpio_pinstate(ro_gpio_pinstate),
+		.ro_mode(ro_mode),
+		.ro_termcount(ro_termcount), 
 		.rdata(rdata), 
 		.rf_gpio_datareg(rf_gpio_datareg), 
 		.rf_gpio_tristate(rf_gpio_tristate), 
-		.rf_gpio_interrupt_mask(rf_gpio_interrupt_mask)
+		.rf_gpio_interrupt_mask(rf_gpio_interrupt_mask),
+		.rf_trig_start(rf_trig_start),
+		.rf_trig_halt(rf_trig_halt),
+		.rf_status(rf_status),
+		.rf_currcount(rf_currcount)
 	);
 
     initial begin
@@ -53,6 +65,8 @@ module register_test;
             r_wn = 0;
             wdata = 0;
             ro_gpio_pinstate = 0;
+            ro_mode = 0;
+            ro_termcount = 0;
     end
     
     always @ (posedge clk)
@@ -61,7 +75,7 @@ module register_test;
         addr = count;
         wdata = count;
         count = count +1;
-        if (addr == 3'b111) begin
+        if (addr == 4'b1101) begin
             if (wben == 4'b1111) begin
                 if (r_wn == 0) begin
                     r_wn = 1;
