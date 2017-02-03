@@ -591,6 +591,10 @@ always @ (posedge clk) begin
         // Checking for reset
         if (reset) begin
             SPI_mode <= 1;
+            
+            spi_hready <= 0;
+            imem_hready <= 0;
+            dmem_hready <= 0;
         end
     end
 end
