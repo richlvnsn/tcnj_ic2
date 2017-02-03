@@ -116,17 +116,77 @@ always @ (posedge clk) begin
         if (spi_haddr[15] == 0) begin
             if (spi_haddr[14] == 0) begin
                 inst_write <= spi_hwdata;
-                inst_addr <= spi_haddr[13:0];
+                inst_addr <= spi_haddr[13:2];
                 inst_rwn <= 0;
+                
+                if (spi_hsize == 3'b000) begin
+                    if (spi_haddr[1:0] == 2'b00) begin
+                        inst_wben <= 4'b0001;
+                    end else if (spi_haddr[1:0] == 2'b01) begin
+                        inst_wben <= 4'b0010;
+                    end else if (spi_haddr[1:0] == 2'b10) begin
+                        inst_wben <= 4'b0100;
+                    end else begin
+                        inst_wben <= 4'b1000;
+                    end
+                end else if (spi_hsize == 3'b001) begin
+                    if (spi_haddr[1:0] == 2'b00) begin
+                        inst_wben <= 4'b0011;
+                    end else begin
+                        inst_wben <= 4'b1100;
+                    end
+                end else begin
+                    inst_wben <= 4'b1111;
+                end
             end else begin
                 data_write <= spi_hwdata;
-                data_addr <= spi_haddr[13:0];
+                data_addr <= spi_haddr[13:2];
                 data_rwn <= 0;
+                
+                if (spi_hsize == 3'b000) begin
+                    if (spi_haddr[1:0] == 2'b00) begin
+                        data_wben <= 4'b0001;
+                    end else if (spi_haddr[1:0] == 2'b01) begin
+                        data_wben <= 4'b0010;
+                    end else if (spi_haddr[1:0] == 2'b10) begin
+                        data_wben <= 4'b0100;
+                    end else begin
+                        data_wben <= 4'b1000;
+                    end
+                end else if (spi_hsize == 3'b001) begin
+                    if (spi_haddr[1:0] == 2'b00) begin
+                        data_wben <= 4'b0011;
+                    end else begin
+                        data_wben <= 4'b1100;
+                    end
+                end else begin
+                    data_wben <= 4'b1111;
+                end
             end
         end else begin
             reg_write <= spi_hwdata;
-            reg_addr <= spi_haddr[3:0];
+            reg_addr <= spi_haddr[2:0];
             reg_rwn <= 0;
+            
+            if (spi_hsize == 3'b000) begin
+                if (spi_haddr[1:0] == 2'b00) begin
+                    reg_wben <= 4'b0001;
+                end else if (spi_haddr[1:0] == 2'b01) begin
+                    reg_wben <= 4'b0010;
+                end else if (spi_haddr[1:0] == 2'b10) begin
+                    reg_wben <= 4'b0100;
+                end else begin
+                    reg_wben <= 4'b1000;
+                end
+            end else if (spi_hsize == 3'b001) begin
+                if (spi_haddr[1:0] == 2'b00) begin
+                    reg_wben <= 4'b0011;
+                end else begin
+                    reg_wben <= 4'b1100;
+                end
+            end else begin
+                reg_wben <= 4'b1111;
+            end
         end
         
         // In this mode, the router should always be ready for a transfer and should always be OK
@@ -145,34 +205,60 @@ always @ (posedge clk) begin
                     // Instruction memory arbitration
                     if (favor_imem) begin
                         // IMEM AHB to instruction communication
-                        inst_addr <= imem_haddr[13:0];
+                        inst_addr <= imem_haddr[13:2];
                         inst_write <= imem_hwdata;
                         inst_rwn <= !imem_hwrite;
                         imem_hrdata <= inst_read;
                         
-                        case (imem_hsize)
-                            3'b000: inst_wben <= 4'b0001;
-                            3'b001: inst_wben <= 4'b0011;
-                            3'b010: inst_wben <= 4'b1111;
-                            default: inst_wben <= 4'b1111;
-                        endcase
+                        if (imem_hsize == 3'b000) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0001;
+                            end else if (imem_haddr[1:0] == 2'b01) begin
+                                inst_wben <= 4'b0010;
+                            end else if (imem_haddr[1:0] == 2'b10) begin
+                                inst_wben <= 4'b0100;
+                            end else begin
+                                inst_wben <= 4'b1000;
+                            end
+                        end else if (imem_hsize == 3'b001) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0011;
+                            end else begin
+                                inst_wben <= 4'b1100;
+                            end
+                        end else begin
+                            inst_wben <= 4'b1111;
+                        end
                         
                         // Responding to the buses
                         imem_hready <= 1;
                         dmem_hready <= 0;
                     end else begin
                         // DMEM AHB to instruction communication
-                        inst_addr <= dmem_haddr[13:0];
+                        inst_addr <= dmem_haddr[13:2];
                         inst_write <= dmem_hwdata;
                         inst_rwn <= !dmem_hwrite;
                         dmem_hrdata <= inst_read;
                         
-                        case (dmem_hsize)
-                            3'b000: inst_wben <= 4'b0001;
-                            3'b001: inst_wben <= 4'b0011;
-                            3'b010: inst_wben <= 4'b1111;
-                            default: inst_wben <= 4'b1111;
-                        endcase
+                        if (dmem_hsize == 3'b000) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0001;
+                            end else if (dmem_haddr[1:0] == 2'b01) begin
+                                inst_wben <= 4'b0010;
+                            end else if (dmem_haddr[1:0] == 2'b10) begin
+                                inst_wben <= 4'b0100;
+                            end else begin
+                                inst_wben <= 4'b1000;
+                            end
+                        end else if (dmem_hsize == 3'b001) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0011;
+                            end else begin
+                                inst_wben <= 4'b1100;
+                            end
+                        end else begin
+                            inst_wben <= 4'b1111;
+                        end
                         
                         // Responding to the buses
                         imem_hready <= 0;
@@ -185,34 +271,60 @@ always @ (posedge clk) begin
                     // Data memory arbitration
                     if (favor_dmem) begin
                         // DMEM AHB to data communication
-                        data_addr <= dmem_haddr[13:0];
+                        data_addr <= dmem_haddr[13:2];
                         data_write <= dmem_hwdata;
                         data_rwn <= !dmem_hwrite;
                         dmem_hrdata <= data_read;
                         
-                        case (dmem_hsize)
-                            3'b000: data_wben <= 4'b0001;
-                            3'b001: data_wben <= 4'b0011;
-                            3'b010: data_wben <= 4'b1111;
-                            default: data_wben <= 4'b1111;
-                        endcase
+                        if (dmem_hsize == 3'b000) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0001;
+                            end else if (dmem_haddr[1:0] == 2'b01) begin
+                                data_wben <= 4'b0010;
+                            end else if (dmem_haddr[1:0] == 2'b10) begin
+                                data_wben <= 4'b0100;
+                            end else begin
+                                data_wben <= 4'b1000;
+                            end
+                        end else if (dmem_hsize == 3'b001) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0011;
+                            end else begin
+                                data_wben <= 4'b1100;
+                            end
+                        end else begin
+                            data_wben <= 4'b1111;
+                        end
                         
                         // Responding to the buses
                         imem_hready <= 0;
                         dmem_hready <= 1;
                     end else begin
                         // IMEM AHB to data communication
-                        data_addr <= imem_haddr[13:0];
+                        data_addr <= imem_haddr[13:2];
                         data_write <= imem_hwdata;
                         data_rwn <= !imem_hwrite;
                         imem_hrdata <= data_read;
                         
-                        case (imem_hsize)
-                            3'b000: data_wben <= 4'b0001;
-                            3'b001: data_wben <= 4'b0011;
-                            3'b010: data_wben <= 4'b1111;
-                            default: data_wben <= 4'b1111;
-                        endcase
+                        if (imem_hsize == 3'b000) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0001;
+                            end else if (imem_haddr[1:0] == 2'b01) begin
+                                data_wben <= 4'b0010;
+                            end else if (imem_haddr[1:0] == 2'b10) begin
+                                data_wben <= 4'b0100;
+                            end else begin
+                                data_wben <= 4'b1000;
+                            end
+                        end else if (imem_hsize == 3'b001) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0011;
+                            end else begin
+                                data_wben <= 4'b1100;
+                            end
+                        end else begin
+                            data_wben <= 4'b1111;
+                        end
                         
                         // Responding to the buses
                         imem_hready <= 1;
@@ -226,34 +338,60 @@ always @ (posedge clk) begin
                 // Register arbitration
                 if (favor_reg) begin
                     // DMEM AHB to register communication
-                    reg_addr <= dmem_haddr[13:0];
+                    reg_addr <= dmem_haddr[2:0];
                     reg_write <= dmem_hwdata;
                     reg_rwn <= !dmem_hwrite;
                     dmem_hrdata <= reg_read;
                     
-                    case (dmem_hsize)
-                        3'b000: reg_wben <= 4'b0001;
-                        3'b001: reg_wben <= 4'b0011;
-                        3'b010: reg_wben <= 4'b1111;
-                        default: reg_wben <= 4'b1111;
-                    endcase
+                    if (dmem_hsize == 3'b000) begin
+                        if (dmem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0001;
+                        end else if (dmem_haddr[1:0] == 2'b01) begin
+                            reg_wben <= 4'b0010;
+                        end else if (dmem_haddr[1:0] == 2'b10) begin
+                            reg_wben <= 4'b0100;
+                        end else begin
+                            reg_wben <= 4'b1000;
+                        end
+                    end else if (dmem_hsize == 3'b001) begin
+                        if (dmem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0011;
+                        end else begin
+                            reg_wben <= 4'b1100;
+                        end
+                    end else begin
+                        reg_wben <= 4'b1111;
+                    end
                     
                     // Responding to the buses
                     imem_hready <= 0;
                     dmem_hready <= 1;
                 end else begin
                     // IMEM AHB to register communication
-                    reg_addr <= imem_haddr[13:0];
+                    reg_addr <= imem_haddr[2:0];
                     reg_write <= imem_hwdata;
                     reg_rwn <= !imem_hwrite;
                     imem_hrdata <= reg_read;
                     
-                    case (imem_hsize)
-                        3'b000: reg_wben <= 4'b0001;
-                        3'b001: reg_wben <= 4'b0011;
-                        3'b010: reg_wben <= 4'b1111;
-                        default: reg_wben <= 4'b1111;
-                    endcase
+                    if (imem_hsize == 3'b000) begin
+                        if (imem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0001;
+                        end else if (imem_haddr[1:0] == 2'b01) begin
+                            reg_wben <= 4'b0010;
+                        end else if (imem_haddr[1:0] == 2'b10) begin
+                            reg_wben <= 4'b0100;
+                        end else begin
+                            reg_wben <= 4'b1000;
+                        end
+                    end else if (imem_hsize == 3'b001) begin
+                        if (imem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0011;
+                        end else begin
+                            reg_wben <= 4'b1100;
+                        end
+                    end else begin
+                        reg_wben <= 4'b1111;
+                    end
                     
                     // Responding to the buses
                     imem_hready <= 1;
@@ -275,30 +413,56 @@ always @ (posedge clk) begin
                     // Checking for instruction or data communication
                     if (imem_haddr[14] == 0) begin
                         // Instruction communication
-                        inst_addr <= imem_haddr[13:0];
+                        inst_addr <= imem_haddr[13:2];
                         inst_write <= imem_hwdata;
                         inst_rwn <= !imem_hwrite;
                         imem_hrdata <= inst_read;
                         
-                        case (imem_hsize)
-                            3'b000: inst_wben <= 4'b0001;
-                            3'b001: inst_wben <= 4'b0011;
-                            3'b010: inst_wben <= 4'b1111;
-                            default: inst_wben <= 4'b1111;
-                        endcase
+                        if (imem_hsize == 3'b000) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0001;
+                            end else if (imem_haddr[1:0] == 2'b01) begin
+                                inst_wben <= 4'b0010;
+                            end else if (imem_haddr[1:0] == 2'b10) begin
+                                inst_wben <= 4'b0100;
+                            end else begin
+                                inst_wben <= 4'b1000;
+                            end
+                        end else if (imem_hsize == 3'b001) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0011;
+                            end else begin
+                                inst_wben <= 4'b1100;
+                            end
+                        end else begin
+                            inst_wben <= 4'b1111;
+                        end
                     end else begin
                         // Data communication
-                        data_addr <= imem_haddr[13:0];
+                        data_addr <= imem_haddr[13:2];
                         data_write <= imem_hwdata;
                         data_rwn <= !imem_hwrite;
                         imem_hrdata <= data_read;
                         
-                        case (imem_hsize)
-                            3'b000: data_wben <= 4'b0001;
-                            3'b001: data_wben <= 4'b0011;
-                            3'b010: data_wben <= 4'b1111;
-                            default: data_wben <= 4'b1111;
-                        endcase
+                        if (imem_hsize == 3'b000) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0001;
+                            end else if (imem_haddr[1:0] == 2'b01) begin
+                                data_wben <= 4'b0010;
+                            end else if (imem_haddr[1:0] == 2'b10) begin
+                                data_wben <= 4'b0100;
+                            end else begin
+                                data_wben <= 4'b1000;
+                            end
+                        end else if (imem_hsize == 3'b001) begin
+                            if (imem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0011;
+                            end else begin
+                                data_wben <= 4'b1100;
+                            end
+                        end else begin
+                            data_wben <= 4'b1111;
+                        end
                     end
                 end else begin
                     // Register communication
@@ -307,12 +471,25 @@ always @ (posedge clk) begin
                     reg_rwn <= !imem_hwrite;
                     imem_hrdata <= reg_read;
                     
-                    case (imem_hsize)
-                        3'b000: reg_wben <= 4'b0001;
-                        3'b001: reg_wben <= 4'b0011;
-                        3'b010: reg_wben <= 4'b1111;
-                        default: reg_wben <= 4'b1111;
-                    endcase
+                    if (imem_hsize == 3'b000) begin
+                        if (imem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0001;
+                        end else if (imem_haddr[1:0] == 2'b01) begin
+                            reg_wben <= 4'b0010;
+                        end else if (imem_haddr[1:0] == 2'b10) begin
+                            reg_wben <= 4'b0100;
+                        end else begin
+                            reg_wben <= 4'b1000;
+                        end
+                    end else if (imem_hsize == 3'b001) begin
+                        if (imem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0011;
+                        end else begin
+                            reg_wben <= 4'b1100;
+                        end
+                    end else begin
+                        reg_wben <= 4'b1111;
+                    end
                 end
             end
             
@@ -323,30 +500,56 @@ always @ (posedge clk) begin
                     // Checking for instruction or data communication
                     if (dmem_haddr[14] == 0) begin
                         // Instruction communication
-                        inst_addr <= dmem_haddr[13:0];
+                        inst_addr <= dmem_haddr[13:2];
                         inst_write <= dmem_hwdata;
                         inst_rwn <= !dmem_hwrite;
                         dmem_hrdata <= inst_read;
                         
-                        case (dmem_hsize)
-                            3'b000: inst_wben <= 4'b0001;
-                            3'b001: inst_wben <= 4'b0011;
-                            3'b010: inst_wben <= 4'b1111;
-                            default: inst_wben <= 4'b1111;
-                        endcase
+                        if (dmem_hsize == 3'b000) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0001;
+                            end else if (dmem_haddr[1:0] == 2'b01) begin
+                                inst_wben <= 4'b0010;
+                            end else if (dmem_haddr[1:0] == 2'b10) begin
+                                inst_wben <= 4'b0100;
+                            end else begin
+                                inst_wben <= 4'b1000;
+                            end
+                        end else if (dmem_hsize == 3'b001) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                inst_wben <= 4'b0011;
+                            end else begin
+                                inst_wben <= 4'b1100;
+                            end
+                        end else begin
+                            inst_wben <= 4'b1111;
+                        end
                     end else begin
                         // Data communication
-                        data_addr <= dmem_haddr[13:0];
+                        data_addr <= dmem_haddr[13:2];
                         data_write <= dmem_hwdata;
                         data_rwn <= !dmem_hwrite;
                         dmem_hrdata <= data_read;
                         
-                        case (dmem_hsize)
-                            3'b000: data_wben <= 4'b0001;
-                            3'b001: data_wben <= 4'b0011;
-                            3'b010: data_wben <= 4'b1111;
-                            default: data_wben <= 4'b1111;
-                        endcase
+                        if (dmem_hsize == 3'b000) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0001;
+                            end else if (dmem_haddr[1:0] == 2'b01) begin
+                                data_wben <= 4'b0010;
+                            end else if (dmem_haddr[1:0] == 2'b10) begin
+                                data_wben <= 4'b0100;
+                            end else begin
+                                data_wben <= 4'b1000;
+                            end
+                        end else if (dmem_hsize == 3'b001) begin
+                            if (dmem_haddr[1:0] == 2'b00) begin
+                                data_wben <= 4'b0011;
+                            end else begin
+                                data_wben <= 4'b1100;
+                            end
+                        end else begin
+                            data_wben <= 4'b1111;
+                        end
                     end
                 end else begin
                     // Register communication
@@ -355,12 +558,25 @@ always @ (posedge clk) begin
                     reg_rwn <= !dmem_hwrite;
                     dmem_hrdata <= reg_read;
                     
-                    case (dmem_hsize)
-                        3'b000: reg_wben <= 4'b0001;
-                        3'b001: reg_wben <= 4'b0011;
-                        3'b010: reg_wben <= 4'b1111;
-                        default: reg_wben <= 4'b1111;
-                    endcase
+                    if (dmem_hsize == 3'b000) begin
+                        if (dmem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0001;
+                        end else if (dmem_haddr[1:0] == 2'b01) begin
+                            reg_wben <= 4'b0010;
+                        end else if (dmem_haddr[1:0] == 2'b10) begin
+                            reg_wben <= 4'b0100;
+                        end else begin
+                            reg_wben <= 4'b1000;
+                        end
+                    end else if (dmem_hsize == 3'b001) begin
+                        if (dmem_haddr[1:0] == 2'b00) begin
+                            reg_wben <= 4'b0011;
+                        end else begin
+                            reg_wben <= 4'b1100;
+                        end
+                    end else begin
+                        reg_wben <= 4'b1111;
+                    end
                 end
             end
             
