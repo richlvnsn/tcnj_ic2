@@ -110,6 +110,11 @@ reg favor_imem = 1;
 reg favor_dmem = 1;
 reg favor_reg = 1;
 
+// Ready signals
+spi_hready = 0;
+imem_hready = 0;
+dmem_hready = 0;
+
 always @ (posedge clk) begin
     if (SPI_mode) begin
         // All code for SPI communication
