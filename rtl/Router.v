@@ -105,7 +105,6 @@ reg [3:0] data_wben;
 reg data_rwn;
 
 // Intermediate Registers
-reg SPI_mode = 1;
 reg favor_imem = 1;
 reg favor_dmem = 1;
 reg favor_reg = 1;
@@ -113,12 +112,10 @@ reg favor_reg = 1;
 always @ (posedge clk) begin
     // Checking for reset
     if (reset) begin
-        SPI_mode <= 1;
-        
         spi_hready <= 0;
         imem_hready <= 0;
         dmem_hready <= 0;
-    end else if (SPI_mode) begin
+    end else if (!SPI_change) begin
         // All code for SPI communication
         if (spi_haddr[15] == 0) begin
             if (spi_haddr[14] == 0) begin
@@ -199,11 +196,6 @@ always @ (posedge clk) begin
         // In this mode, the router should always be ready for a transfer and should always be OK
         spi_hready <= 1;
         spi_hresp <= 0;
-        
-        // Checking to change modes
-        if (SPI_change == 1) begin
-            SPI_mode <= 0;
-        end
     end else begin
         // Checking if arbitration is necessary
         if (imem_htrans == 2'b10 && dmem_htrans == 2'b10 && imem_haddr[15:14] == dmem_haddr[15:14]) begin
