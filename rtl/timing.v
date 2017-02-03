@@ -34,28 +34,29 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
             end
         else 
         begin
-            if (ro_mode)
-            begin //If Continuous
-                if (rf_currcount == ro_termcount)
-                begin
-                    //Send Pulse here!
-                    rf_currcount <= 1'b0;
-                end
-            end else    //One Shot
-            begin
-                if (rf_currcount == ro_termcount)
-                begin
-                    //Send one shot pulse here!
-                    
-                end
-                    
-            end
-            
+	        if (rf_status)	//If Status is Running
+	        begin
+	            if (ro_mode) //If Continuous
+	            begin 
+	                if (rf_currcount == ro_termcount)
+	                begin
+	                    //Send Pulse here!
+	                    rf_currcount <= 1'b0;
+	                end
+	            end else //One Shot
+	            begin
+	                if (rf_currcount == ro_termcount)
+	                begin
+	                    //Send one shot pulse here! 
+	                end  
+	            rf_currcount <= rf_currcount + 1'b1;  
+	        	end
+        	end
+	            
             //On start trigger    
             if (ro_trig_start && !rf_status)
             begin
                 rf_status <= 1'b1;
-                rf_currcount <= rf_currcount + 1'b1;
             end 
             
             //On halt trigger
