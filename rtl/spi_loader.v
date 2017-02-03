@@ -141,7 +141,7 @@ module spi_loader(
                 begin
                     cur_word_in[7:0] <= cur_byte_in;    // Parse lowest byte
                     pipe_reg <= cur_word_in;            // Load pipeline register with previous word
-                    if (core_rst) spi_hwrite <= 1;     // Assert hwrite to begin basic AHB-Lite transfer
+                    if (~core_rst) spi_hwrite <= 1;     // Assert hwrite to begin basic AHB-Lite transfer
                                                         // and only allow writing when core is being held at reset
                     spi_haddr <= spi_haddr + 4;
                 end
@@ -188,7 +188,7 @@ module spi_loader(
     ////////////////////////
     // Core Reset
     ////////////////////////
-    assign core_rst = spi_bit_ctr < (24 + 32 + parse_num_bytes*8);  // 24 bits for MOSI read command and address
+    assign core_rst = ~(spi_bit_ctr < (24 + 32 + parse_num_bytes*8));  // 24 bits for MOSI read command and address
                                                                     // plus 32 bits for parse_num_bits and start_addr
                                                                     // plus number of bits to parse
 endmodule

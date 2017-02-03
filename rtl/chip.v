@@ -110,7 +110,7 @@ wire [15:0] rf_gpio_interrupt_mask;
 
 // RISC-V Core
 
-assign htif_reset = core_rst || reset;
+assign htif_reset = ~(core_rst && reset);
 vscale_core core(   .clk(clk),
                     .ext_interrupts(ext_interrupts),
                     // Router (Instruction Memory AHB Lines)
@@ -159,8 +159,8 @@ vscale_core core(   .clk(clk),
                     
 // Router
 Router router(  .clk(clk),
-                .reset(reset),
-                .SPI_change(),
+                .reset(~reset),
+                .SPI_change(core_rst),
                 // SPI Loader IOs
                 .spi_hready(spi_hready),
                 .spi_hresp(spi_hresp),
@@ -219,28 +219,28 @@ Router router(  .clk(clk),
 
 // RAM
 // Instruction RAM
-assign iram0_rwn = inst_rwn || inst_wben[0];
+assign iram0_rwn = inst_rwn || ~inst_wben[0];
 RAM iram0(  .clk(clk), 
             .r_wn(iram0_rwn),
             .address(inst_addr),
             .data_in(inst_write[7:0]),
             .data_out(inst_read[7:0])
 );
-assign iram1_rwn = inst_rwn || inst_wben[1];
+assign iram1_rwn = inst_rwn || ~inst_wben[1];
 RAM iram1(  .clk(clk), 
             .r_wn(iram1_rwn),
             .address(inst_addr),
             .data_in(inst_write[15:8]),
             .data_out(inst_read[15:8])
 );
-assign iram2_rwn = inst_rwn || inst_wben[2];
+assign iram2_rwn = inst_rwn || ~inst_wben[2];
 RAM iram2(  .clk(clk), 
             .r_wn(iram2_rwn),
             .address(inst_addr),
             .data_in(inst_write[23:16]),
             .data_out(inst_read[23:16])
 );
-assign iram3_rwn = inst_rwn || inst_wben[3];
+assign iram3_rwn = inst_rwn || ~inst_wben[3];
 RAM iram3(  .clk(clk), 
             .r_wn(iram3_rwn),
             .address(inst_addr),
@@ -248,28 +248,28 @@ RAM iram3(  .clk(clk),
             .data_out(inst_read[31:24])
 );
 // Data RAM
-assign dram0_rwn = data_rwn || data_wben[0];
+assign dram0_rwn = data_rwn || ~data_wben[0];
 RAM dram0(  .clk(clk), 
             .r_wn(dram0_rwn),
             .address(data_addr),
             .data_in(data_write[7:0]),
             .data_out(data_read[7:0])
 );
-assign dram1_rwn = data_rwn || data_wben[1];
+assign dram1_rwn = data_rwn || ~data_wben[1];
 RAM dram1(  .clk(clk), 
             .r_wn(dram1_rwn),
             .address(data_addr),
             .data_in(data_write[15:8]),
             .data_out(data_read[15:8])
 );
-assign dram2_rwn = data_rwn || data_wben[2];
+assign dram2_rwn = data_rwn || ~data_wben[2];
 RAM dram2(  .clk(clk), 
             .r_wn(dram2_rwn),
             .address(data_addr),
             .data_in(data_write[23:16]),
             .data_out(data_read[23:16])
 );
-assign dram3_rwn = data_rwn || data_wben[3];
+assign dram3_rwn = data_rwn || ~data_wben[3];
 RAM dram3(  .clk(clk), 
             .r_wn(dram3_rwn),
             .address(data_addr),
@@ -279,7 +279,7 @@ RAM dram3(  .clk(clk),
 
 // Registers
 register register(  .clk(clk),
-                    .reset(reset), 
+                    .reset(~reset), 
                     .addr(reg_addr),
                     .wben(reg_wben),
                     .r_wn(reg_rwn),
