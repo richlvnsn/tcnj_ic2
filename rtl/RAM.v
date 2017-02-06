@@ -22,11 +22,11 @@ reg [7:0] memory_array [0:4095];
 reg [7:0] data_out;
 
 always @(posedge clk) begin
-    if (r_wn) begin
-        data_out <= memory_array[address];
-    end else begin
-        memory_array[address] <= data_in;
-    end
+    if (!r_wn) memory_array[address] <= data_in;
+end
+
+always @ (*) begin
+    if (r_wn) data_out <= memory_array[address];
 end
 
 endmodule
