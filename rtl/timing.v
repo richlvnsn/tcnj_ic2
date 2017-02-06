@@ -24,7 +24,21 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
     output reg [31:0] rf_currcount;
     output reg rf_int;
     
+    //On start trigger
+    always @(posedge ro_trig_start)
+        begin
+            rf_status <= 1'b1;
+        end 
+    
+    //On halt trigger
+    always @(posedge ro_trig_halt)
+    begin
+        rf_status <= 1'b0;
+        rf_currcount <= 1'b0;
+    end
+    
     always @(posedge clk)
+    begin
         //Reset Triggers
         if (reset)
             begin
@@ -33,12 +47,14 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
                 rf_int <= 0;
             end
         else 
+        if (rf_status)
         begin
             if (ro_mode)
             begin //If Continuous
                 if (rf_currcount == ro_termcount)
                 begin
                     //Send Pulse here!
+                    rf_int <= 1'b1;
                     rf_currcount <= 1'b0;
                 end
             end else    //One Shot
@@ -46,23 +62,16 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
                 if (rf_currcount == ro_termcount)
                 begin
                     //Send one shot pulse here!
-                    
+                    rf_int <= 1'b1;
+                    rf_status <= 1'b0;
                 end
-                    
             end
-            
-            //On start trigger    
-            if (ro_trig_start && !rf_status)
-            begin
-                rf_status <= 1'b1;
-                rf_currcount <= rf_currcount + 1'b1;
-            end 
-            
-            //On halt trigger
-            if (ro_trig_halt)
-            begin
-                rf_status <= 1'b0;
-                rf_currcount <= 1'b0;
-            end
+            rf_currcount <= rf_currcount + 1'b1;
         end
+        
+        if (rf_int)
+        begin
+            rf_int <= 1'b0;
+        end
+    end
 endmodule
