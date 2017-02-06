@@ -114,26 +114,6 @@ reg [31:0] haddr;
 reg [3:0] wben;
 
 always @ (*) begin
-    if (hsize == 3'b000) begin
-        if (haddr[1:0] == 2'b00) begin
-            wben <= 4'b0001;
-        end else if (haddr[1:0] == 2'b01) begin
-            wben <= 4'b0010;
-        end else if (haddr[1:0] == 2'b10) begin
-            wben <= 4'b0100;
-        end else begin
-            wben <= 4'b1000;
-        end
-    end else if (hsize == 3'b001) begin
-        if (haddr[1:0] == 2'b00) begin
-            wben <= 4'b0011;
-        end else begin
-            wben <= 4'b1100;
-        end
-    end else begin
-        wben <= 4'b1111;
-    end
-    
     // Checking if arbitration is necessary
     if (imem_htrans == 2'b10 && dmem_htrans == 2'b10 && imem_haddr[15:14] == dmem_haddr[15:14]) begin
         if (imem_haddr[15] == 0) begin
@@ -206,6 +186,26 @@ always @ (*) begin
 end
 
 always @ (posedge clk) begin
+    if (hsize == 3'b000) begin
+        if (haddr[1:0] == 2'b00) begin
+            wben <= 4'b0001;
+        end else if (haddr[1:0] == 2'b01) begin
+            wben <= 4'b0010;
+        end else if (haddr[1:0] == 2'b10) begin
+            wben <= 4'b0100;
+        end else begin
+            wben <= 4'b1000;
+        end
+    end else if (hsize == 3'b001) begin
+        if (haddr[1:0] == 2'b00) begin
+            wben <= 4'b0011;
+        end else begin
+            wben <= 4'b1100;
+        end
+    end else begin
+        wben <= 4'b1111;
+    end
+
     // Checking for reset
     if (reset) begin
         spi_hready <= 0;
