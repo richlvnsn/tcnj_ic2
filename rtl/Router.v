@@ -82,12 +82,12 @@ reg reg_rwn;
 input [31:0] inst_read;
 
 output [31:0] inst_write;
-output [13:0] inst_addr;
+output [11:0] inst_addr;
 output [3:0] inst_wben;
 output inst_rwn;
 
 reg [31:0] inst_write;
-reg [13:0] inst_addr;
+reg [11:0] inst_addr;
 reg [3:0] inst_wben;
 reg inst_rwn;
 
@@ -95,12 +95,12 @@ reg inst_rwn;
 input [31:0] data_read;
 
 output [31:0] data_write;
-output [13:0] data_addr;
+output [11:0] data_addr;
 output [3:0] data_wben;
 output data_rwn;
 
 reg [31:0] data_write;
-reg [13:0] data_addr;
+reg [11:0] data_addr;
 reg [3:0] data_wben;
 reg data_rwn;
 
