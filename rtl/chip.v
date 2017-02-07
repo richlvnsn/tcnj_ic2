@@ -68,6 +68,7 @@ wire htif_ipi_req_data;
 wire htif_ipi_resp_ready;
 wire htif_ipi_resp_valid;
 wire htif_ipi_resp_data;
+wire htif_debug_stats_pcr;
 
 // Router connections
 
@@ -79,13 +80,13 @@ wire [3:0] reg_wben;
 
 wire [31:0] inst_read;
 wire [31:0] inst_write;
-wire [13:0] inst_addr;
+wire [11:0] inst_addr;
 wire inst_rwn;
 wire [3:0] inst_wben;
 
 wire [31:0] data_read;
 wire [31:0] data_write;
-wire [13:0] data_addr;
+wire [11:0] data_addr;
 wire data_rwn;
 wire [3:0] data_wben;
 
@@ -154,7 +155,8 @@ vscale_core core(   .clk(clk),
                     .htif_ipi_req_data(htif_ipi_req_data),
                     .htif_ipi_resp_ready(htif_ipi_resp_ready),
                     .htif_ipi_resp_valid(htif_ipi_resp_valid),
-                    .htif_ipi_resp_data(htif_ipi_resp_data)
+                    .htif_ipi_resp_data(htif_ipi_resp_data),
+                    .htif_debug_stats_pcr(htif_debug_stats_pcr)
 );
                     
 // Router
@@ -309,7 +311,8 @@ spi_loader spi( .clk(clk),
                 .spi_hmastlock(spi_hmastlock),
                 .spi_hprot(spi_hprot),
                 .spi_htrans(spi_htrans),
-                .spi_hwdata(spi_hwdata)
+                .spi_hwdata(spi_hwdata),
+                .spi_hresp(spi_hresp)
 );
           
 
