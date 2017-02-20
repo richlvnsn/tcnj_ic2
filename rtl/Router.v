@@ -111,6 +111,7 @@ reg favor_reg = 1;
 
 reg delay_mode = 0;
 reg [31:0] int_haddr;
+reg [31:0] int_haddr_read;
 reg [2:0] int_hsize;
 reg [1:0] int_hready;
 reg int_source;
@@ -150,9 +151,9 @@ always @ (*) begin
         end
     end else begin
         // Checking for register communication
-        if (int_haddr[15] == 0) begin
+        if (int_haddr_read[15] == 0) begin
             // Checking for instruction or data communication
-            if (int_haddr[14] == 0) begin
+            if (int_haddr_read[14] == 0) begin
                 // Instruction communication
                 imem_hrdata <= inst_read;
                 dmem_hrdata <= inst_read;
@@ -600,7 +601,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr <= imem_haddr;
+                            int_haddr_read <= imem_haddr;
                             inst_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -623,7 +624,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr <= imem_haddr;
+                            int_haddr_read <= imem_haddr;
                             data_addr <= imem_haddr[13:2];
                             data_rwn <= 1;
                             
@@ -647,7 +648,7 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
-                        int_haddr <= imem_haddr;
+                        int_haddr_read <= imem_haddr;
                         reg_addr <= imem_haddr[2:0];
                         reg_rwn <= 1;
                         
@@ -678,7 +679,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr <= dmem_haddr;
+                            int_haddr_read <= dmem_haddr;
                             inst_addr <= dmem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -701,7 +702,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr <= dmem_haddr;
+                            int_haddr_read <= dmem_haddr;
                             data_addr <= dmem_haddr[13:2];
                             data_rwn <= 1;
                             
@@ -725,7 +726,7 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
-                        int_haddr <= dmem_haddr;
+                        int_haddr_read <= dmem_haddr;
                         reg_addr <= dmem_haddr[2:0];
                         reg_rwn <= 1;
                         
