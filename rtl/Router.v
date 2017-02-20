@@ -109,31 +109,13 @@ reg favor_imem = 1;
 reg favor_dmem = 1;
 reg favor_reg = 1;
 
-reg [2:0] hsize;
-reg [3:0] wben;
-reg [31:0] haddr;
+reg delay_mode = 0;
+reg [31:0] int_haddr;
+reg [2:0] int_hsize;
+reg [1:0] int_hready;
+reg int_source;
 
 always @ (*) begin
-    if (hsize == 3'b000) begin
-        if (haddr[1:0] == 2'b00) begin
-            wben <= 4'b0001;
-        end else if (haddr[1:0] == 2'b01) begin
-            wben <= 4'b0010;
-        end else if (haddr[1:0] == 2'b10) begin
-            wben <= 4'b0100;
-        end else begin
-            wben <= 4'b1000;
-        end
-    end else if (hsize == 3'b001) begin
-        if (haddr[1:0] == 2'b00) begin
-            wben <= 4'b0011;
-        end else begin
-            wben <= 4'b1100;
-        end
-    end else begin
-        wben <= 4'b1111;
-    end
-
     // Checking if arbitration is necessary
     if (imem_htrans == 2'b10 && dmem_htrans == 2'b10 && imem_haddr[15:14] == dmem_haddr[15:14]) begin
         if (imem_haddr[15] == 0) begin
@@ -211,34 +193,245 @@ always @ (posedge clk) begin
         spi_hready <= 0;
         imem_hready <= 0;
         dmem_hready <= 0;
+        delay_mode <= 0;
+    end else if (delay_mode) begin
+        delay_mode <= 0;
+        imem_hready <= int_hready[1];
+        dmem_hready <= int_hready[0];
+    
+        if (int_source) begin
+            // DMEM bus writing
+            if (int_haddr[15] == 0) begin
+                if (int_haddr[14] == 0) begin
+                    inst_write <= dmem_hwdata;
+                    inst_addr <= int_haddr[13:2];
+                    inst_rwn <= 0;
+                    
+                    if (int_hsize == 3'b000) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            inst_wben <= 4'b0001;
+                        end else if (int_haddr[1:0] == 2'b01) begin
+                            inst_wben <= 4'b0010;
+                        end else if (int_haddr[1:0] == 2'b10) begin
+                            inst_wben <= 4'b0100;
+                        end else begin
+                            inst_wben <= 4'b1000;
+                        end
+                    end else if (int_hsize == 3'b001) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            inst_wben <= 4'b0011;
+                        end else begin
+                            inst_wben <= 4'b1100;
+                        end
+                    end else begin
+                        inst_wben <= 4'b1111;
+                    end
+                end else begin
+                    data_write <= dmem_hwdata;
+                    data_addr <= int_haddr[13:2];
+                    data_rwn <= 0;
+                    
+                    if (int_hsize == 3'b000) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            data_wben <= 4'b0001;
+                        end else if (int_haddr[1:0] == 2'b01) begin
+                            data_wben <= 4'b0010;
+                        end else if (int_haddr[1:0] == 2'b10) begin
+                            data_wben <= 4'b0100;
+                        end else begin
+                            data_wben <= 4'b1000;
+                        end
+                    end else if (int_hsize == 3'b001) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            data_wben <= 4'b0011;
+                        end else begin
+                            data_wben <= 4'b1100;
+                        end
+                    end else begin
+                        data_wben <= 4'b1111;
+                    end
+                end
+            end else begin
+                reg_write <= dmem_hwdata;
+                reg_addr <= int_haddr[2:0];
+                reg_rwn <= 0;
+                
+                if (int_hsize == 3'b000) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        reg_wben <= 4'b0001;
+                    end else if (int_haddr[1:0] == 2'b01) begin
+                        reg_wben <= 4'b0010;
+                    end else if (int_haddr[1:0] == 2'b10) begin
+                        reg_wben <= 4'b0100;
+                    end else begin
+                        reg_wben <= 4'b1000;
+                    end
+                end else if (int_hsize == 3'b001) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        reg_wben <= 4'b0011;
+                    end else begin
+                        reg_wben <= 4'b1100;
+                    end
+                end else begin
+                    reg_wben <= 4'b1111;
+                end
+            end
+        end else begin
+            // IMEM bus writing
+            if (int_haddr[15] == 0) begin
+                if (int_haddr[14] == 0) begin
+                    inst_write <= imem_hwdata;
+                    inst_addr <= int_haddr[13:2];
+                    inst_rwn <= 0;
+                    
+                    if (int_hsize == 3'b000) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            inst_wben <= 4'b0001;
+                        end else if (int_haddr[1:0] == 2'b01) begin
+                            inst_wben <= 4'b0010;
+                        end else if (int_haddr[1:0] == 2'b10) begin
+                            inst_wben <= 4'b0100;
+                        end else begin
+                            inst_wben <= 4'b1000;
+                        end
+                    end else if (int_hsize == 3'b001) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            inst_wben <= 4'b0011;
+                        end else begin
+                            inst_wben <= 4'b1100;
+                        end
+                    end else begin
+                        inst_wben <= 4'b1111;
+                    end
+                end else begin
+                    data_write <= imem_hwdata;
+                    data_addr <= int_haddr[13:2];
+                    data_rwn <= 0;
+                    
+                    if (int_hsize == 3'b000) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            data_wben <= 4'b0001;
+                        end else if (int_haddr[1:0] == 2'b01) begin
+                            data_wben <= 4'b0010;
+                        end else if (int_haddr[1:0] == 2'b10) begin
+                            data_wben <= 4'b0100;
+                        end else begin
+                            data_wben <= 4'b1000;
+                        end
+                    end else if (int_hsize == 3'b001) begin
+                        if (int_haddr[1:0] == 2'b00) begin
+                            data_wben <= 4'b0011;
+                        end else begin
+                            data_wben <= 4'b1100;
+                        end
+                    end else begin
+                        data_wben <= 4'b1111;
+                    end
+                end
+            end else begin
+                reg_write <= imem_hwdata;
+                reg_addr <= int_haddr[2:0];
+                reg_rwn <= 0;
+                
+                if (int_hsize == 3'b000) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        reg_wben <= 4'b0001;
+                    end else if (int_haddr[1:0] == 2'b01) begin
+                        reg_wben <= 4'b0010;
+                    end else if (int_haddr[1:0] == 2'b10) begin
+                        reg_wben <= 4'b0100;
+                    end else begin
+                        reg_wben <= 4'b1000;
+                    end
+                end else if (int_hsize == 3'b001) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        reg_wben <= 4'b0011;
+                    end else begin
+                        reg_wben <= 4'b1100;
+                    end
+                end else begin
+                    reg_wben <= 4'b1111;
+                end
+            end
+        end
     end else if (!SPI_change) begin
-        // All code for SPI communication
-        if (spi_haddr[15] == 0) begin
-            if (spi_haddr[14] == 0) begin
+        int_haddr <= spi_haddr;
+        int_hsize <= spi_hsize;
+        
+        if (int_haddr[15] == 0) begin
+            if (int_haddr[14] == 0) begin
                 inst_write <= spi_hwdata;
-                inst_addr <= spi_haddr[13:2];
+                inst_addr <= int_haddr[13:2];
                 inst_rwn <= 0;
                 
-                hsize <= spi_hsize;
-                haddr <= spi_haddr;
-                inst_wben <= wben;
+                if (int_hsize == 3'b000) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        inst_wben <= 4'b0001;
+                    end else if (int_haddr[1:0] == 2'b01) begin
+                        inst_wben <= 4'b0010;
+                    end else if (int_haddr[1:0] == 2'b10) begin
+                        inst_wben <= 4'b0100;
+                    end else begin
+                        inst_wben <= 4'b1000;
+                    end
+                end else if (int_hsize == 3'b001) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        inst_wben <= 4'b0011;
+                    end else begin
+                        inst_wben <= 4'b1100;
+                    end
+                end else begin
+                    inst_wben <= 4'b1111;
+                end
             end else begin
                 data_write <= spi_hwdata;
-                data_addr <= spi_haddr[13:2];
+                data_addr <= int_haddr[13:2];
                 data_rwn <= 0;
                 
-                hsize <= spi_hsize;
-                haddr <= spi_haddr;
-                data_wben <= wben;
+                if (int_hsize == 3'b000) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        data_wben <= 4'b0001;
+                    end else if (int_haddr[1:0] == 2'b01) begin
+                        data_wben <= 4'b0010;
+                    end else if (int_haddr[1:0] == 2'b10) begin
+                        data_wben <= 4'b0100;
+                    end else begin
+                        data_wben <= 4'b1000;
+                    end
+                end else if (int_hsize == 3'b001) begin
+                    if (int_haddr[1:0] == 2'b00) begin
+                        data_wben <= 4'b0011;
+                    end else begin
+                        data_wben <= 4'b1100;
+                    end
+                end else begin
+                    data_wben <= 4'b1111;
+                end
             end
         end else begin
             reg_write <= spi_hwdata;
-            reg_addr <= spi_haddr[2:0];
+            reg_addr <= int_haddr[2:0];
             reg_rwn <= 0;
             
-            hsize <= spi_hsize;
-            haddr <= spi_haddr;
-            reg_wben <= wben;
+            if (int_hsize == 3'b000) begin
+                if (int_haddr[1:0] == 2'b00) begin
+                    reg_wben <= 4'b0001;
+                end else if (int_haddr[1:0] == 2'b01) begin
+                    reg_wben <= 4'b0010;
+                end else if (int_haddr[1:0] == 2'b10) begin
+                    reg_wben <= 4'b0100;
+                end else begin
+                    reg_wben <= 4'b1000;
+                end
+            end else if (int_hsize == 3'b001) begin
+                if (int_haddr[1:0] == 2'b00) begin
+                    reg_wben <= 4'b0011;
+                end else begin
+                    reg_wben <= 4'b1100;
+                end
+            end else begin
+                reg_wben <= 4'b1111;
+            end
         end
         
         // In this mode, the router should always be ready for a transfer and should always be OK
@@ -252,32 +445,50 @@ always @ (posedge clk) begin
                     // Instruction memory arbitration
                     if (favor_imem) begin
                         // IMEM AHB to instruction communication
-                        inst_addr <= imem_haddr[13:2];
-                        inst_write <= imem_hwdata;
-                        inst_rwn <= !imem_hwrite;
-                        imem_hrdata <= inst_read;
-                        
-                        hsize <= imem_hsize;
-                        haddr <= imem_haddr;
-                        inst_wben <= wben;
-                        
-                        // Responding to the buses
-                        imem_hready <= 1;
-                        dmem_hready <= 0;
+                        if (imem_hwrite) begin
+                            int_haddr <= imem_haddr;
+                            int_hsize <= imem_hsize;
+                            
+                            int_hready <= 2'b10;
+                            int_source <= 0;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            inst_addr <= imem_haddr[13:2];
+                            inst_rwn <= 1;
+                            imem_hrdata <= inst_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 1;
+                            dmem_hready <= 0;
+                        end
                     end else begin
                         // DMEM AHB to instruction communication
-                        inst_addr <= dmem_haddr[13:2];
-                        inst_write <= dmem_hwdata;
-                        inst_rwn <= !dmem_hwrite;
-                        dmem_hrdata <= inst_read;
-                        
-                        hsize <= dmem_hsize;
-                        haddr <= dmem_haddr;
-                        inst_wben <= wben;
-                        
-                        // Responding to the buses
-                        imem_hready <= 0;
-                        dmem_hready <= 1;
+                        if (dmem_hwrite) begin
+                            int_haddr <= dmem_haddr;
+                            int_hsize <= dmem_hsize;
+                            
+                            int_hready <= 2'b01;
+                            int_source <= 1;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            inst_addr <= dmem_haddr[13:2];
+                            inst_rwn <= 1;
+                            dmem_hrdata <= inst_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 1;
+                        end
                     end
                     
                     // Switch arbitration mode
@@ -286,32 +497,50 @@ always @ (posedge clk) begin
                     // Data memory arbitration
                     if (favor_dmem) begin
                         // DMEM AHB to data communication
-                        data_addr <= dmem_haddr[13:2];
-                        data_write <= dmem_hwdata;
-                        data_rwn <= !dmem_hwrite;
-                        dmem_hrdata <= data_read;
-                        
-                        hsize <= dmem_hsize;
-                        haddr <= dmem_haddr;
-                        data_wben <= wben;
-                        
-                        // Responding to the buses
-                        imem_hready <= 0;
-                        dmem_hready <= 1;
+                        if (dmem_hwrite) begin
+                            int_haddr <= dmem_haddr;
+                            int_hsize <= dmem_hsize;
+                            
+                            int_hready <= 2'b01;
+                            int_source <= 1;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            data_addr <= dmem_haddr[13:2];
+                            data_rwn <= 1;
+                            dmem_hrdata <= data_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 1;
+                        end
                     end else begin
                         // IMEM AHB to data communication
-                        data_addr <= imem_haddr[13:2];
-                        data_write <= imem_hwdata;
-                        data_rwn <= !imem_hwrite;
-                        imem_hrdata <= data_read;
-                        
-                        hsize <= imem_hsize;
-                        haddr <= imem_haddr;
-                        data_wben <= wben;
-                        
-                        // Responding to the buses
-                        imem_hready <= 1;
-                        dmem_hready <= 0;
+                        if (imem_hwrite) begin
+                            int_haddr <= imem_haddr;
+                            int_hsize <= imem_hsize;
+                            
+                            int_hready <= 2'b10;
+                            int_source <= 0;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            data_addr <= imem_haddr[13:2];
+                            inst_rwn <= 1;
+                            imem_hrdata <= data_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 1;
+                            dmem_hready <= 0;
+                        end
                     end
                     
                     // Switch arbitration mode
@@ -321,32 +550,50 @@ always @ (posedge clk) begin
                 // Register arbitration
                 if (favor_reg) begin
                     // DMEM AHB to register communication
-                    reg_addr <= dmem_haddr[2:0];
-                    reg_write <= dmem_hwdata;
-                    reg_rwn <= !dmem_hwrite;
-                    dmem_hrdata <= reg_read;
-                    
-                    hsize <= dmem_hsize;
-                    haddr <= dmem_haddr;
-                    reg_wben <= wben;
-                    
-                    // Responding to the buses
-                    imem_hready <= 0;
-                    dmem_hready <= 1;
+                    if (dmem_hwrite) begin
+                        int_haddr <= dmem_haddr;
+                        int_hsize <= dmem_hsize;
+                        
+                        int_hready <= 2'b01;
+                        int_source <= 1;
+                        
+                        delay_mode <= 1;
+                        
+                        // Responding to the buses
+                        imem_hready <= 0;
+                        dmem_hready <= 0;
+                    end else begin
+                        reg_addr <= dmem_haddr[2:0];
+                        reg_rwn <= 1;
+                        dmem_hrdata <= reg_read;
+                        
+                        // Responding to the buses
+                        imem_hready <= 0;
+                        dmem_hready <= 1;
+                    end
                 end else begin
                     // IMEM AHB to register communication
-                    reg_addr <= imem_haddr[2:0];
-                    reg_write <= imem_hwdata;
-                    reg_rwn <= !imem_hwrite;
-                    imem_hrdata <= reg_read;
-                    
-                    hsize <= imem_hsize;
-                    haddr <= imem_haddr;
-                    reg_wben <= wben;
-                    
-                    // Responding to the buses
-                    imem_hready <= 1;
-                    dmem_hready <= 0;
+                    if (imem_hwrite) begin
+                        int_haddr <= imem_haddr;
+                        int_hsize <= imem_hsize;
+                        
+                        int_hready <= 2'b10;
+                        int_source <= 0;
+                        
+                        delay_mode <= 1;
+                        
+                        // Responding to the buses
+                        imem_hready <= 0;
+                        dmem_hready <= 0;
+                    end else begin
+                        reg_addr <= imem_haddr[2:0];
+                        reg_rwn <= 1;
+                        imem_hrdata <= reg_read;
+                        
+                        // Responding to the buses
+                        imem_hready <= 1;
+                        dmem_hready <= 0;
+                    end
                 end
                 
                 // Switch arbitration mode
@@ -364,35 +611,74 @@ always @ (posedge clk) begin
                     // Checking for instruction or data communication
                     if (imem_haddr[14] == 0) begin
                         // Instruction communication
-                        inst_addr <= imem_haddr[13:2];
-                        inst_write <= imem_hwdata;
-                        inst_rwn <= !imem_hwrite;
-                        imem_hrdata <= inst_read;
-                        
-                        hsize <= imem_hsize;
-                        haddr <= imem_haddr;
-                        inst_wben <= wben;
+                        if (imem_hwrite) begin
+                            int_haddr <= imem_haddr;
+                            int_hsize <= imem_hsize;
+                            
+                            int_hready <= 2'b11;
+                            int_source <= 0;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            inst_addr <= imem_haddr[13:2];
+                            inst_rwn <= 1;
+                            imem_hrdata <= inst_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 1;
+                            dmem_hready <= 1;
+                        end
                     end else begin
                         // Data communication
-                        data_addr <= imem_haddr[13:2];
-                        data_write <= imem_hwdata;
-                        data_rwn <= !imem_hwrite;
-                        imem_hrdata <= data_read;
-                        
-                        hsize <= imem_hsize;
-                        haddr <= imem_haddr;
-                        data_wben <= wben;
+                        if (imem_hwrite) begin
+                            int_haddr <= imem_haddr;
+                            int_hsize <= imem_hsize;
+                            
+                            int_hready <= 2'b11;
+                            int_source <= 0;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            data_addr <= imem_haddr[13:2];
+                            data_rwn <= 1;
+                            imem_hrdata <= data_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 1;
+                            dmem_hready <= 1;
+                        end
                     end
                 end else begin
                     // Register communication
-                    reg_addr <= imem_haddr[2:0];
-                    reg_write <= imem_hwdata;
-                    reg_rwn <= !imem_hwrite;
-                    imem_hrdata <= reg_read;
-                    
-                    hsize <= imem_hsize;
-                    haddr <= imem_haddr;
-                    reg_wben <= wben;
+                    if (imem_hwrite) begin
+                        int_haddr <= imem_haddr;
+                        int_hsize <= imem_hsize;
+                        
+                        int_hready <= 2'b11;
+                        int_source <= 0;
+                        
+                        delay_mode <= 1;
+                        
+                        // Responding to the buses
+                        imem_hready <= 0;
+                        dmem_hready <= 0;
+                    end else begin
+                        reg_addr <= imem_haddr[2:0];
+                        reg_rwn <= 1;
+                        imem_hrdata <= reg_read;
+                        
+                        // Responding to the buses
+                        imem_hready <= 1;
+                        dmem_hready <= 1;
+                    end
                 end
             end
             
@@ -403,43 +689,79 @@ always @ (posedge clk) begin
                     // Checking for instruction or data communication
                     if (dmem_haddr[14] == 0) begin
                         // Instruction communication
-                        inst_addr <= dmem_haddr[13:2];
-                        inst_write <= dmem_hwdata;
-                        inst_rwn <= !dmem_hwrite;
-                        dmem_hrdata <= inst_read;
-                        
-                        hsize <= dmem_hsize;
-                        haddr <= dmem_haddr;
-                        inst_wben <= wben;
+                        if (dmem_hwrite) begin
+                            int_haddr <= dmem_haddr;
+                            int_hsize <= dmem_hsize;
+                            
+                            int_hready <= 2'b11;
+                            int_source <= 1;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            inst_addr <= dmem_haddr[13:2];
+                            inst_rwn <= 1;
+                            dmem_hrdata <= inst_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 1;
+                            dmem_hready <= 1;
+                        end
                     end else begin
                         // Data communication
-                        data_addr <= dmem_haddr[13:2];
-                        data_write <= dmem_hwdata;
-                        data_rwn <= !dmem_hwrite;
-                        dmem_hrdata <= data_read;
-                        
-                        hsize <= dmem_hsize;
-                        haddr <= dmem_haddr;
-                        data_wben <= wben;
+                        if (dmem_hwrite) begin
+                            int_haddr <= dmem_haddr;
+                            int_hsize <= dmem_hsize;
+                            
+                            int_hready <= 2'b11;
+                            int_source <= 1;
+                            
+                            delay_mode <= 1;
+                            
+                            // Responding to the buses
+                            imem_hready <= 0;
+                            dmem_hready <= 0;
+                        end else begin
+                            data_addr <= dmem_haddr[13:2];
+                            data_rwn <= 1;
+                            dmem_hrdata <= data_read;
+                            
+                            // Responding to the buses
+                            imem_hready <= 1;
+                            dmem_hready <= 1;
+                        end
                     end
                 end else begin
                     // Register communication
-                    reg_addr <= dmem_haddr[2:0];
-                    reg_write <= dmem_hwdata;
-                    reg_rwn <= !dmem_hwrite;
-                    dmem_hrdata <= reg_read;
-                    
-                    hsize <= dmem_hsize;
-                    haddr <= dmem_haddr;
-                    reg_wben <= wben;
+                    if (dmem_hwrite) begin
+                        int_haddr <= dmem_haddr;
+                        int_hsize <= dmem_hsize;
+                        
+                        int_hready <= 2'b11;
+                        int_source <= 1;
+                        
+                        delay_mode <= 1;
+                        
+                        // Responding to the buses
+                        imem_hready <= 0;
+                        dmem_hready <= 0;
+                    end else begin
+                        reg_addr <= dmem_haddr[2:0];
+                        reg_rwn <= 1;
+                        dmem_hrdata <= reg_read;
+                        
+                        // Responding to the buses
+                        imem_hready <= 1;
+                        dmem_hready <= 1;
+                    end
                 end
             end
             
-            // When not arbitrating, ready and resp should always be OK
-            imem_hready <= 1;
+            // When not arbitrating, resp should always be OK
             imem_hresp <= 0;
-            
-            dmem_hready <= 1;
             dmem_hresp <= 0;
         end
     end
