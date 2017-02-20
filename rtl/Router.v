@@ -110,7 +110,6 @@ reg favor_dmem = 1;
 reg favor_reg = 1;
 
 reg delay_mode = 0;
-reg delay_mode_2 = 0;
 reg [31:0] int_haddr;
 reg [2:0] int_hsize;
 reg [1:0] int_hready;
@@ -195,13 +194,10 @@ always @ (posedge clk) begin
         imem_hready <= 0;
         dmem_hready <= 0;
         delay_mode <= 0;
-    end else if (delay_mode_2) begin
-        delay_mode_2 <= 0;
-        imem_hready <= int_hready[1];
-        dmem_hready <= int_hready[0];
     end else if (delay_mode) begin
         delay_mode <= 0;
-        delay_mode_2 <= 1;
+        imem_hready <= int_hready[1];
+        dmem_hready <= int_hready[0];
     
         if (int_source) begin
             // DMEM bus writing
