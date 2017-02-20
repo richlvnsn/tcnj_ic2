@@ -14,9 +14,12 @@ module chip(//Chip I/O
             input clk,
             input reset,
             input miso,
-            input ss,
+            output ss,
             output mosi,
-            output spi_clk
+            output spi_clk,
+            input [15:0] ro_gpio_pinstate,
+            output [15:0] rf_gpio_datareg,
+            output [15:0] rf_gpio_tristate
             );
 
 
@@ -102,9 +105,9 @@ wire dram2_rwn;
 wire dram3_rwn;
 
 // Register connections
-wire [15:0] ro_gpio_pinstate;
-wire [15:0] rf_gpio_datareg;
-wire [15:0] rf_gpio_tristate;
+//wire [15:0] ro_gpio_pinstate;
+//wire [15:0] rf_gpio_datareg;
+//wire [15:0] rf_gpio_tristate;
 wire [15:0] rf_gpio_interrupt_mask;
 
 // Implementing the modules
