@@ -24,6 +24,7 @@
 module chip_test;
     reg clk, reset, w, hold, vcc, vss;
     wire spi_clk, mosi, miso, ss;
+    wire [15:0] gpio_input;
     
     //wire c,d,q,s,w,hold,vcc,vss;
     
@@ -39,19 +40,21 @@ module chip_test;
                         .VSS(vss)
                      );
   
-    chip uut(
+    chip_top uut(
         .clk(clk),
         .miso(miso),
         .reset(reset),
-        .spi_clk(spi_clk),
-        .mosi(mosi),
-        .ss(ss)
+        .spi_clk_out(spi_clk),
+        .mosi_out(mosi),
+        .spi_en_out(ss),
+        .gpio_input(gpio_input)
         );
         
         M95XXX_Macro_mux M95XXX_Macro_mux();
     initial 
     begin 
         $readmemh("spi.hex",U_M95XXX.memory);
+        //gpio_input = 0;
         clk = 0; 
         reset = 1; 
         w = 1;      // Tied to 1 to prevent write protect
