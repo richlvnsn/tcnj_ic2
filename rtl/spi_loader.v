@@ -4,19 +4,9 @@
 // Engineer: Richard Levenson
 // 
 // Create Date: 10/04/2016 04:52:21 PM
-// Design Name: SPI Bootloader
 // Module Name: spi_loader
-// Project Name: RISC-V 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Project Name: RISC-V ASIC Microcontroller
+// Target Devices: Artix-7 Nexys 4
 //////////////////////////////////////////////////////////////////////////////////
 
 module spi_loader(
@@ -123,7 +113,7 @@ module spi_loader(
             parse_num_bytes <= 0;
             parse_start_addr <= 0;
             spi_hwrite <= 0;
-            spi_haddr <= 32'h00000200 - 4;  // Default to start address 0x200
+            spi_haddr <= 32'h00000000 - 4;  // Default to start address 0x200
         end else 
         begin
             if (spi_pipe_en)
@@ -151,7 +141,7 @@ module spi_loader(
                 begin
                     cur_word_in[7:0] <= cur_byte_in;    // Parse lowest byte
                     pipe_reg <= cur_word_in;            // Load pipeline register with previous word
-                    if (core_rst) spi_hwrite <= 1;     // Assert hwrite to begin basic AHB-Lite transfer
+                    if (~core_rst) spi_hwrite <= 1;     // Assert hwrite to begin basic AHB-Lite transfer
                                                         // and only allow writing when core is being held at reset
                     spi_haddr <= spi_haddr + 4;
                 end
@@ -198,7 +188,7 @@ module spi_loader(
     ////////////////////////
     // Core Reset
     ////////////////////////
-    assign core_rst = spi_bit_ctr < (24 + 32 + parse_num_bytes*8);  // 24 bits for MOSI read command and address
+    assign core_rst = ~(spi_bit_ctr < (24 + 32 + parse_num_bytes*8));  // 24 bits for MOSI read command and address
                                                                     // plus 32 bits for parse_num_bits and start_addr
                                                                     // plus number of bits to parse
 endmodule
