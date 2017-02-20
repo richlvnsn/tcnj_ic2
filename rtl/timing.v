@@ -21,7 +21,7 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
     input [31:0] ro_termcount;
     
     output reg rf_status;
-    output reg [31:0] rf_currcount;
+    output reg [31:0] rf_currcount = 0;
     output reg rf_int;
     
     //On start trigger
@@ -55,16 +55,17 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
                 begin
                     rf_int <= 1'b1;
                     rf_currcount <= 1'b0;
-                end
+                end else
+                rf_currcount <= rf_currcount + 1'b1;
             end else //One Shot
             begin
                 if (rf_currcount == ro_termcount)
                 begin
                     rf_int <= 1'b1;
                     rf_status <= 0;
-                end  
-            rf_currcount <= rf_currcount + 1'b1;  
-        	end
+                end else
+                rf_currcount <= rf_currcount + 1'b1;
+        	end 
     	end
 
         if (rf_int)

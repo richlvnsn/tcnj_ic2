@@ -61,12 +61,14 @@ module timing_test;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-		ro_mode = 1'b1;
+		ro_mode = 1'b0;
 		ro_termcount = 10;
 		
 		#5;
 		ro_trig_start = 1'b1;
         
+        #5;
+        ro_trig_start = 1'b0;
 		// Add stimulus here
 
 	end
