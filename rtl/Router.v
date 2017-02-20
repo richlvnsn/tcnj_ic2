@@ -460,7 +460,6 @@ always @ (posedge clk) begin
                         end else begin
                             inst_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
-                            imem_hrdata <= inst_read;
                             
                             // Responding to the buses
                             imem_hready <= 1;
@@ -483,7 +482,6 @@ always @ (posedge clk) begin
                         end else begin
                             inst_addr <= dmem_haddr[13:2];
                             inst_rwn <= 1;
-                            dmem_hrdata <= inst_read;
                             
                             // Responding to the buses
                             imem_hready <= 0;
@@ -512,7 +510,6 @@ always @ (posedge clk) begin
                         end else begin
                             data_addr <= dmem_haddr[13:2];
                             data_rwn <= 1;
-                            dmem_hrdata <= data_read;
                             
                             // Responding to the buses
                             imem_hready <= 0;
@@ -535,7 +532,6 @@ always @ (posedge clk) begin
                         end else begin
                             data_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
-                            imem_hrdata <= data_read;
                             
                             // Responding to the buses
                             imem_hready <= 1;
@@ -565,7 +561,6 @@ always @ (posedge clk) begin
                     end else begin
                         reg_addr <= dmem_haddr[2:0];
                         reg_rwn <= 1;
-                        dmem_hrdata <= reg_read;
                         
                         // Responding to the buses
                         imem_hready <= 0;
@@ -588,7 +583,6 @@ always @ (posedge clk) begin
                     end else begin
                         reg_addr <= imem_haddr[2:0];
                         reg_rwn <= 1;
-                        imem_hrdata <= reg_read;
                         
                         // Responding to the buses
                         imem_hready <= 1;
@@ -626,7 +620,6 @@ always @ (posedge clk) begin
                         end else begin
                             inst_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
-                            imem_hrdata <= inst_read;
                             
                             // Responding to the buses
                             imem_hready <= 1;
@@ -649,7 +642,6 @@ always @ (posedge clk) begin
                         end else begin
                             data_addr <= imem_haddr[13:2];
                             data_rwn <= 1;
-                            imem_hrdata <= data_read;
                             
                             // Responding to the buses
                             imem_hready <= 1;
@@ -673,7 +665,6 @@ always @ (posedge clk) begin
                     end else begin
                         reg_addr <= imem_haddr[2:0];
                         reg_rwn <= 1;
-                        imem_hrdata <= reg_read;
                         
                         // Responding to the buses
                         imem_hready <= 1;
@@ -704,7 +695,6 @@ always @ (posedge clk) begin
                         end else begin
                             inst_addr <= dmem_haddr[13:2];
                             inst_rwn <= 1;
-                            dmem_hrdata <= inst_read;
                             
                             // Responding to the buses
                             imem_hready <= 1;
@@ -727,7 +717,6 @@ always @ (posedge clk) begin
                         end else begin
                             data_addr <= dmem_haddr[13:2];
                             data_rwn <= 1;
-                            dmem_hrdata <= data_read;
                             
                             // Responding to the buses
                             imem_hready <= 1;
@@ -751,7 +740,6 @@ always @ (posedge clk) begin
                     end else begin
                         reg_addr <= dmem_haddr[2:0];
                         reg_rwn <= 1;
-                        dmem_hrdata <= reg_read;
                         
                         // Responding to the buses
                         imem_hready <= 1;
