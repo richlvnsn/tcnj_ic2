@@ -33,7 +33,7 @@ output wire miso_out;
 output wire mosi_out;
 output wire [15:0] gpio_ps;
 
-wire pinwire;                              //Pinwire that is the output of the mux
+wire [15:0] pinwire;                              //Pinwire that is the output of the mux
 
 assign clk_out = clk;
 assign reset_out = reset;
@@ -42,7 +42,7 @@ assign spi_en_out = spi_en;
 assign miso_out = miso;
 assign mosi_out = mosi;
 
-assign pinwire = (gpio_ts) ? gpio_dr : 1'bz;       //MUX that controls the value of gpio_ts as either gpio_dr or hi-Z
+assign pinwire = (gpio_ts) ? gpio_dr : 16'bz;       //MUX that controls the value of gpio_ts as either gpio_dr or hi-Z
 assign gpio_ps = pinwire;                          //Output of the pinwire to gpio
 assign gpio_input = pinwire;
 
