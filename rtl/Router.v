@@ -111,7 +111,8 @@ reg favor_reg = 1;
 
 reg delay_mode = 0;
 reg [31:0] int_haddr;
-reg [31:0] int_haddr_read;
+reg [31:0] int_imem_haddr_read;
+reg [31:0] int_dmem_haddr_read;
 reg [2:0] int_hsize;
 reg [1:0] int_hready;
 reg [1:0] int_imem_htrans;
@@ -154,9 +155,9 @@ always @ (*) begin
     end else begin
         if (int_imem_htrans == 2'b10) begin
             // Checking for register communication
-            if (int_haddr_read[15] == 0) begin
+            if (int_imem_haddr_read[15] == 0) begin
                 // Checking for instruction or data communication
-                if (int_haddr_read[14] == 0) begin
+                if (int_imem_haddr_read[14] == 0) begin
                     // Instruction communication
                     imem_hrdata <= inst_read;
                 end else begin
@@ -171,9 +172,9 @@ always @ (*) begin
         
         if (int_dmem_htrans == 2'b10) begin
             // Checking for register communication
-            if (int_haddr_read[15] == 0) begin
+            if (int_dmem_haddr_read[15] == 0) begin
                 // Checking for instruction or data communication
-                if (int_haddr_read[14] == 0) begin
+                if (int_dmem_haddr_read[14] == 0) begin
                     // Instruction communication
                     dmem_hrdata <= inst_read;
                 end else begin
@@ -619,7 +620,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr_read <= imem_haddr;
+                            int_imem_haddr_read <= imem_haddr;
                             int_imem_htrans <= imem_htrans;
                             inst_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
@@ -643,7 +644,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr_read <= imem_haddr;
+                            int_imem_haddr_read <= imem_haddr;
                             int_imem_htrans <= imem_htrans;
                             data_addr <= imem_haddr[13:2];
                             data_rwn <= 1;
@@ -668,7 +669,7 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
-                        int_haddr_read <= imem_haddr;
+                        int_imem_haddr_read <= imem_haddr;
                         int_imem_htrans <= imem_htrans;
                         reg_addr <= imem_haddr[2:0];
                         reg_rwn <= 1;
@@ -700,7 +701,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr_read <= dmem_haddr;
+                            int_dmem_haddr_read <= dmem_haddr;
                             int_dmem_htrans <= dmem_htrans;
                             inst_addr <= dmem_haddr[13:2];
                             inst_rwn <= 1;
@@ -724,7 +725,7 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
-                            int_haddr_read <= dmem_haddr;
+                            int_dmem_haddr_read <= dmem_haddr;
                             int_dmem_htrans <= dmem_htrans;
                             data_addr <= dmem_haddr[13:2];
                             data_rwn <= 1;
@@ -749,7 +750,7 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
-                        int_haddr_read <= dmem_haddr;
+                        int_dmem_haddr_read <= dmem_haddr;
                         int_dmem_htrans <= dmem_htrans;
                         reg_addr <= dmem_haddr[2:0];
                         reg_rwn <= 1;
