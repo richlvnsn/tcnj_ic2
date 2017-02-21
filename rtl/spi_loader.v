@@ -112,10 +112,21 @@ module spi_loader(
             pipe_reg <= 0;
             parse_num_bytes <= 0;
             parse_start_addr <= 0;
-            spi_hwrite <= 0;
             spi_haddr <= 32'h00000000 - 4;  // Default to start address 0x200
+            spi_hwdata <= 0;
+            spi_hwrite <= 0;
         end else 
         begin
+            // Handle AHB hwrite and hwdata signals
+            if (spi_hready)    // Wait for ready signal from slave
+            begin
+                if (spi_hwrite)     // Wait for write signal
+                begin
+                    spi_hwdata <= pipe_reg; // Load write data from pipeline register
+                    spi_hwrite <= 0;        // Deassert write signal
+                end
+            end
+            // Parse input from MISO
             if (spi_pipe_en)
             begin
                 cur_byte_in[7 - ((spi_bit_ctr - 1) & 8'h7)] <= miso;    // De-serializing into bytes
@@ -168,22 +179,6 @@ module spi_loader(
                                 // protection information
     assign spi_hsize = 3'b010;  // AHB-Lite transfer size corresponding to 32-bit Word transfers
     assign spi_htrans = 2'b10;  // Nonesequential AHB Lite transfer type
-    
-    always @ (posedge clk)
-    begin
-        if (!reset)
-        begin
-            spi_hwdata <= 0;
-        end
-        else if (spi_hready)    // Wait for ready signal from slave
-        begin
-            if (spi_hwrite)     // Wait for write signal
-            begin
-                spi_hwdata <= pipe_reg; // Load write data from pipeline register
-                spi_hwrite <= 0;        // Deassert write signal
-            end
-        end
-    end
     
     ////////////////////////
     // Core Reset
