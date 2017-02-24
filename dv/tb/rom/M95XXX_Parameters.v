@@ -350,30 +350,37 @@
 //   `define F_var                  0
 //`endif
 
-`ifdef "A125"
-   `define A125_var               1
-   `define A145_var               0
-`elsif "A145"
-   `define A125_var               0
-   `define A145_var               1
-`else
-   `define A125_var               0
-   `define A145_var               0
-`endif
+`define A125_var               0
+`define A145_var               0
 
-`ifdef "S125"
-   `define S125_var                1
-`else
-   `define S125_var                0
-`endif
+//`ifdef "A125"
+//   `define A125_var               1
+//   `define A145_var               0
+//`elsif "A145"
+//   `define A125_var               0
+//   `define A145_var               1
+//`else
+//   `define A125_var               0
+//   `define A145_var               0
+//`endif
 
-`ifdef "ID"
-   `define IDPAGE           1
-`elsif "A125"
-   `define IDPAGE           1
-`elsif "A145"
-   `define IDPAGE           1
-`else
-   `define IDPAGE           0
-`endif
+`define S125_var                0
+
+//`ifdef "S125"
+//   `define S125_var                1
+//`else
+//   `define S125_var                0
+//`endif
+
+`define IDPAGE           0
+
+//`ifdef "ID"
+//   `define IDPAGE           1
+//`elsif "A125"
+//   `define IDPAGE           1
+//`elsif "A145"
+//   `define IDPAGE           1
+//`else
+//   `define IDPAGE           0
+//`endif
 

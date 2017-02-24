@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`include "C:\hdl\tcnj_ic2_integration\tcnj_ic2_integration.srcs\sim_1\imports\SPI EEPROM Verilog Model\M95XXX_Parameters.v"
+`include "rom/M95XXX_Parameters.v"
 
 module chip_test;
     reg clk, reset, w, hold, vcc, vss;
