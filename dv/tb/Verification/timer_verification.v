@@ -42,7 +42,7 @@ module timer_verification;
 	reg ex_int;
 
 	reg [31:0] vectornum, errors;
-	reg [3:0] testvectors[10000:0];
+	reg [3:0] testvectors[12:0];
 
 	// Instantiate the Unit Under Test (UUT)
 	timing uut (
