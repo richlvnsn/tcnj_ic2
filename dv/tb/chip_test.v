@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`include "C:\hdl\tcnj_ic2_integration\tcnj_ic2_integration.srcs\sim_1\imports\SPI EEPROM Verilog Model\M95XXX_Parameters.v"
+`include "rom/M95XXX_Parameters.v"
 
 module chip_test;
     reg clk, reset, w, hold, vcc, vss;
@@ -53,7 +53,7 @@ module chip_test;
         M95XXX_Macro_mux M95XXX_Macro_mux();
     initial 
     begin 
-        $readmemh("spi.hex",U_M95XXX.memory);
+        $readmemh("walking_spi.hex",U_M95XXX.memory);
         //gpio_input = 0;
         clk = 0; 
         reset = 1; 

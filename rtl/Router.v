@@ -109,17 +109,22 @@ reg favor_imem = 1;
 reg favor_dmem = 1;
 reg favor_reg = 1;
 
+// Delay pipeline registers
 reg delay_mode = 0;
 reg [31:0] int_haddr;
+reg [31:0] int_imem_haddr_read;
+reg [31:0] int_dmem_haddr_read;
 reg [2:0] int_hsize;
 reg [1:0] int_hready;
+reg [1:0] int_imem_htrans;
+reg [1:0] int_dmem_htrans;
 reg int_source;
 
 always @ (*) begin
     // Checking if arbitration is necessary
-    if (imem_htrans == 2'b10 && dmem_htrans == 2'b10 && imem_haddr[15:14] == dmem_haddr[15:14]) begin
-        if (imem_haddr[15] == 0) begin
-            if (imem_haddr[14] == 0) begin
+    if (int_imem_htrans == 2'b10 && int_dmem_htrans == 2'b10 && int_imem_haddr_read[15:14] == int_dmem_haddr_read[15:14]) begin
+        if (int_imem_haddr_read[15] == 0) begin
+            if (int_imem_haddr_read[14] == 0) begin
                 // Instruction memory arbitration
                 if (favor_imem) begin
                     // IMEM AHB to instruction communication
@@ -149,12 +154,11 @@ always @ (*) begin
             end
         end
     end else begin
-        // Instruction Memory bus routing
-        if (imem_htrans == 2'b10) begin
+        if (int_imem_htrans == 2'b10) begin
             // Checking for register communication
-            if (imem_haddr[15] == 0) begin
+            if (int_imem_haddr_read[15] == 0) begin
                 // Checking for instruction or data communication
-                if (imem_haddr[14] == 0) begin
+                if (int_imem_haddr_read[14] == 0) begin
                     // Instruction communication
                     imem_hrdata <= inst_read;
                 end else begin
@@ -167,12 +171,11 @@ always @ (*) begin
             end
         end
         
-        // Data Memory bus routing
-        if (dmem_htrans == 2'b10) begin
+        if (int_dmem_htrans == 2'b10) begin
             // Checking for register communication
-            if (dmem_haddr[15] == 0) begin
+            if (int_dmem_haddr_read[15] == 0) begin
                 // Checking for instruction or data communication
-                if (dmem_haddr[14] == 0) begin
+                if (int_dmem_haddr_read[14] == 0) begin
                     // Instruction communication
                     dmem_hrdata <= inst_read;
                 end else begin
@@ -458,6 +461,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_imem_haddr_read <= imem_haddr;
+                            int_imem_htrans <= imem_htrans;
                             inst_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -480,6 +485,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_dmem_haddr_read <= dmem_haddr;
+                            int_dmem_htrans <= dmem_htrans;
                             inst_addr <= dmem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -508,6 +515,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_dmem_haddr_read <= dmem_haddr;
+                            int_dmem_htrans <= dmem_htrans;
                             data_addr <= dmem_haddr[13:2];
                             data_rwn <= 1;
                             
@@ -530,6 +539,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_imem_haddr_read <= imem_haddr;
+                            int_imem_htrans <= imem_htrans;
                             data_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -559,6 +570,8 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
+                        int_dmem_haddr_read <= dmem_haddr;
+                        int_dmem_htrans <= dmem_htrans;
                         reg_addr <= dmem_haddr[2:0];
                         reg_rwn <= 1;
                         
@@ -581,6 +594,8 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
+                        int_imem_haddr_read <= imem_haddr;
+                        int_imem_htrans <= imem_htrans;
                         reg_addr <= imem_haddr[2:0];
                         reg_rwn <= 1;
                         
@@ -618,6 +633,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_imem_haddr_read <= imem_haddr;
+                            int_imem_htrans <= imem_htrans;
                             inst_addr <= imem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -640,6 +657,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_imem_haddr_read <= imem_haddr;
+                            int_imem_htrans <= imem_htrans;
                             data_addr <= imem_haddr[13:2];
                             data_rwn <= 1;
                             
@@ -663,6 +682,8 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
+                        int_imem_haddr_read <= imem_haddr;
+                        int_imem_htrans <= imem_htrans;
                         reg_addr <= imem_haddr[2:0];
                         reg_rwn <= 1;
                         
@@ -693,6 +714,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_dmem_haddr_read <= dmem_haddr;
+                            int_dmem_htrans <= dmem_htrans;
                             inst_addr <= dmem_haddr[13:2];
                             inst_rwn <= 1;
                             
@@ -715,6 +738,8 @@ always @ (posedge clk) begin
                             imem_hready <= 0;
                             dmem_hready <= 0;
                         end else begin
+                            int_dmem_haddr_read <= dmem_haddr;
+                            int_dmem_htrans <= dmem_htrans;
                             data_addr <= dmem_haddr[13:2];
                             data_rwn <= 1;
                             
@@ -738,6 +763,8 @@ always @ (posedge clk) begin
                         imem_hready <= 0;
                         dmem_hready <= 0;
                     end else begin
+                        int_dmem_haddr_read <= dmem_haddr;
+                        int_dmem_htrans <= dmem_htrans;
                         reg_addr <= dmem_haddr[2:0];
                         reg_rwn <= 1;
                         
