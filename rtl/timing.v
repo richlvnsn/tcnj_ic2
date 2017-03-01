@@ -46,31 +46,30 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
                 rf_currcount <= 0;
                 rf_int <= 0;
             end
-        else 
-        if (rf_status)	//If Status is Running
-        begin
-            if (ro_mode) //If Continuous
-            begin 
-                if (rf_currcount == ro_termcount)
-                begin
-                    rf_int <= 1'b1;
-                    rf_currcount <= 1'b0;
-                end else
-                rf_currcount <= rf_currcount + 1'b1;
-            end else //One Shot
-            begin
-                if (rf_currcount == ro_termcount)
-                begin
-                    rf_int <= 1'b1;
-                    rf_status <= 0;
-                end else
-                rf_currcount <= rf_currcount + 1'b1;
-        	end 
-    	end
+        else begin
+	    	if (rf_int)
+            	rf_int <= 1'b0;
 
-        if (rf_int)
-        begin
-            rf_int <= 1'b0;
-        end
+	        if (rf_status)	//If Status is Running
+	        begin
+	            if (ro_mode) //If Continuous
+	            begin 
+	                if (rf_currcount == ro_termcount)
+	                begin
+	                    rf_int <= 1'b1;
+	                    rf_currcount <= 1'b0;
+	                end else
+	                rf_currcount <= rf_currcount + 1'b1;
+	            end else //One Shot
+	            begin
+	                if (rf_currcount == ro_termcount)
+	                begin
+	                    rf_int <= 1'b1;
+	                    rf_status <= 0;
+	                end else
+	                rf_currcount <= rf_currcount + 1'b1;
+	        	end 
+	    	end
+    	end
     end
 endmodule

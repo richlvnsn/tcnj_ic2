@@ -4,6 +4,6 @@ import sys
 
 fileName = sys.argv[1]
 
-with open("fileName.csv") as infile, open("fileName.tv", "w") as outfile:
+with open("{}.csv".format(fileName)) as infile, open("{}.data".format(fileName), "w") as outfile:
     for line in infile:
         outfile.write(line.replace(",", ""))
