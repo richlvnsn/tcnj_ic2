@@ -79,8 +79,8 @@ module spi_loader(
             spi_bit_ctr <= 0;
         end else
         begin
-            if (spi_pipe_en) spi_bit_ctr <= spi_bit_ctr + 1;
-            if (spi_bit_ctr >= 262168) spi_bit_ctr <= 0; //max value is (1B instruction + 2B address + 32KB data)*8 bits/byte = 262168
+            if (spi_pipe_en && !core_rst) spi_bit_ctr <= spi_bit_ctr + 1;
+            //if (spi_bit_ctr >= 262168) spi_bit_ctr <= 0; //max value is (1B instruction + 2B address + 32KB data)*8 bits/byte = 262168
         end
     end
     

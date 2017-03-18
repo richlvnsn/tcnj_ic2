@@ -77,7 +77,7 @@ wire htif_debug_stats_pcr;
 
 wire [31:0] reg_read;
 wire [31:0] reg_write;
-wire [2:0] reg_addr;
+wire [3:0] reg_addr;
 wire reg_rwn;
 wire [3:0] reg_wben;
 
