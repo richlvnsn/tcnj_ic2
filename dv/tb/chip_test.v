@@ -68,4 +68,6 @@ module chip_test;
     end 
     always 
         #2.5  clk =  ! clk; //200 MHz master clock
+        
+    assign gpio_input[15] = 1;
 endmodule

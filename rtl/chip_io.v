@@ -58,7 +58,7 @@ assign pinwire[12] = (gpio_ts[12]) ? gpio_dr[12] : 1'bz;
 assign pinwire[13] = (gpio_ts[13]) ? gpio_dr[13] : 1'bz;
 assign pinwire[14] = (gpio_ts[14]) ? gpio_dr[14] : 1'bz;
 assign pinwire[15] = (gpio_ts[15]) ? gpio_dr[15] : 1'bz;
-assign gpio_ps = pinwire;                          //Output of the pinwire to gpio
+assign gpio_ps = gpio_input;                          //Output of the pinwire to gpio
 assign gpio_input = pinwire;
 
 endmodule
