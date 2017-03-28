@@ -53,7 +53,7 @@ module chip_test;
         M95XXX_Macro_mux M95XXX_Macro_mux();
     initial 
     begin 
-        $readmemh("button_spi.hex",U_M95XXX.memory);
+        $readmemh("read_register_spi.hex",U_M95XXX.memory);
         //gpio_input = 0;
         clk = 0; 
         reset = 1; 
