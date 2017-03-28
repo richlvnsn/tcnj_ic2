@@ -43,6 +43,28 @@ reg [31:0] ro_cname = 32'h48524a44;        // Read-only chip name (team initials
 reg [31:0] ro_cversion = 32'h00000001;     // Read-only chip info, 8 bits each: Major, Minor, Bugfix, Development
 reg [31:0] rf_scratch;
 
+always @(*)
+    begin
+    if (r_wn)                           //Reading Enabled
+        begin
+            case(addr)
+                4'b0000: rdata <= ro_cname;
+                4'b0001: rdata <= ro_cversion;
+                4'b0010: rdata <= {16'b0, rf_gpio_tristate}; //Since these are 16 bits, we need to pad them.
+                4'b0011: rdata <= {16'b0, ro_gpio_pinstate};
+                4'b0100: rdata <= {16'b0, rf_gpio_interrupt_mask};
+                4'b0101: rdata <= {16'b0, rf_gpio_datareg};
+                4'b0110: rdata <= rf_scratch;
+                4'b0111: rdata <= {31'b0, rf_trig_start};
+                4'b1000: rdata <= {31'b0, rf_trig_halt};
+                4'b1001: rdata <= {31'b0, rf_mode};
+                4'b1010: rdata <= rf_termcount;
+                4'b1011: rdata <= {31'b0, ro_status};
+                4'b1100: rdata <= ro_currcount;
+            endcase
+        end
+    end
+
 always @(posedge clk)
     if (reset)
         begin
@@ -57,25 +79,7 @@ always @(posedge clk)
             rdata <= 0;
         end 
     else begin
-        if (r_wn)                           //Reading Enabled
-            begin
-                case(addr)
-                    4'b0000: rdata <= ro_cname;
-                    4'b0001: rdata <= ro_cversion;
-                    4'b0010: rdata <= {16'b0, rf_gpio_tristate}; //Since these are 16 bits, we need to pad them.
-                    4'b0011: rdata <= {16'b0, ro_gpio_pinstate};
-                    4'b0100: rdata <= {16'b0, rf_gpio_interrupt_mask};
-                    4'b0101: rdata <= {16'b0, rf_gpio_datareg};
-                    4'b0110: rdata <= rf_scratch;
-                    4'b0111: rdata <= {31'b0, rf_trig_start};
-                    4'b1000: rdata <= {31'b0, rf_trig_halt};
-                    4'b1001: rdata <= {31'b0, rf_mode};
-                    4'b1010: rdata <= rf_termcount;
-                    4'b1011: rdata <= {31'b0, ro_status};
-                    4'b1100: rdata <= ro_currcount;
-                endcase
-            end
-        else                          //Write Enabled
+        if (~r_wn)   //Write Enabled
             begin   
                 case(addr)
                     4'b0010: begin
@@ -134,8 +138,8 @@ always @(posedge clk)
                            rf_termcount[23:16] <= wdata[23:16];
                        if (wben[3])
                            rf_termcount[31:24] <= wdata[31:24];
-                   end 
-                endcase
+                       end 
+               endcase
             end
-    end
+        end
 endmodule
