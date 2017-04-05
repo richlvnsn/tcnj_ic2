@@ -53,7 +53,7 @@ module chip_test;
         M95XXX_Macro_mux M95XXX_Macro_mux();
     initial 
     begin 
-        $readmemh("button_spi.hex",U_M95XXX.memory);
+        $readmemh("readName_spi.hex",U_M95XXX.memory);
         //gpio_input = 0;
         clk = 0; 
         reset = 1; 
@@ -69,5 +69,5 @@ module chip_test;
     always 
         #2.5  clk =  ! clk; //200 MHz master clock
         
-    assign gpio_input[15] = 1;
+    //assign gpio_input[15] = 1;
 endmodule

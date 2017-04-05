@@ -76,7 +76,7 @@ always @(posedge clk)
             rf_trig_halt <= 0;
             rf_mode <= 0;
             rf_termcount <= 0;
-            rdata <= 0;
+            //rdata <= 0;
         end 
     else begin
         if (~r_wn)   //Write Enabled
