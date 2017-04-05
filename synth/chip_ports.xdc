@@ -44,3 +44,4 @@ set_property IOSTANDARD LVCMOS33 [get_ports {gpio_input[14]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {gpio_input[15]}]
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets clk_IBUF]
 
+
