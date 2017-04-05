@@ -44,16 +44,16 @@ module register_test;
 		.r_wn(r_wn), 
 		.wdata(wdata), 
 		.ro_gpio_pinstate(ro_gpio_pinstate),
-		.ro_mode(ro_mode),
-		.ro_termcount(ro_termcount), 
+		.rf_mode(rf_mode),
+		.rf_termcount(rf_termcount), 
 		.rdata(rdata), 
 		.rf_gpio_datareg(rf_gpio_datareg), 
 		.rf_gpio_tristate(rf_gpio_tristate), 
 		.rf_gpio_interrupt_mask(rf_gpio_interrupt_mask),
 		.rf_trig_start(rf_trig_start),
 		.rf_trig_halt(rf_trig_halt),
-		.rf_status(rf_status),
-		.rf_currcount(rf_currcount)
+		.ro_status(ro_status),
+		.ro_currcount(ro_currcount)
 	);
 
     initial begin

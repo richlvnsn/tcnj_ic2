@@ -75,7 +75,7 @@ output reg_rwn;
 
 reg [31:0] reg_write;
 reg [3:0] reg_wben;
-reg [2:0] reg_addr;
+reg [3:0] reg_addr;
 reg reg_rwn;
 
 // RAM IOs (Instruction Memory)
@@ -256,7 +256,7 @@ always @ (posedge clk) begin
                 end
             end else begin
                 reg_write <= dmem_hwdata;
-                reg_addr <= int_haddr[2:0];
+                reg_addr <= int_haddr[5:2];
                 reg_rwn <= 0;
                 
                 if (int_hsize == 3'b000) begin
@@ -333,7 +333,7 @@ always @ (posedge clk) begin
                 end
             end else begin
                 reg_write <= imem_hwdata;
-                reg_addr <= int_haddr[2:0];
+                reg_addr <= int_haddr[5:2];
                 reg_rwn <= 0;
                 
                 if (int_hsize == 3'b000) begin
@@ -413,7 +413,7 @@ always @ (posedge clk) begin
             end
         end else begin
             reg_write <= spi_hwdata;
-            reg_addr <= int_haddr[2:0];
+            reg_addr <= int_haddr[5:2];
             reg_rwn <= 0;
             
             if (int_hsize == 3'b000) begin
@@ -572,7 +572,7 @@ always @ (posedge clk) begin
                     end else begin
                         int_dmem_haddr_read <= dmem_haddr;
                         int_dmem_htrans <= dmem_htrans;
-                        reg_addr <= dmem_haddr[2:0];
+                        reg_addr <= dmem_haddr[5:2];
                         reg_rwn <= 1;
                         
                         // Responding to the buses
@@ -596,7 +596,7 @@ always @ (posedge clk) begin
                     end else begin
                         int_imem_haddr_read <= imem_haddr;
                         int_imem_htrans <= imem_htrans;
-                        reg_addr <= imem_haddr[2:0];
+                        reg_addr <= imem_haddr[5:2];
                         reg_rwn <= 1;
                         
                         // Responding to the buses
@@ -684,7 +684,7 @@ always @ (posedge clk) begin
                     end else begin
                         int_imem_haddr_read <= imem_haddr;
                         int_imem_htrans <= imem_htrans;
-                        reg_addr <= imem_haddr[2:0];
+                        reg_addr <= imem_haddr[5:2];
                         reg_rwn <= 1;
                         
                         // Responding to the buses
@@ -765,7 +765,7 @@ always @ (posedge clk) begin
                     end else begin
                         int_dmem_haddr_read <= dmem_haddr;
                         int_dmem_htrans <= dmem_htrans;
-                        reg_addr <= dmem_haddr[2:0];
+                        reg_addr <= dmem_haddr[5:2];
                         reg_rwn <= 1;
                         
                         // Responding to the buses
