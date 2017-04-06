@@ -20,6 +20,7 @@ module chip_top(
 );
 
 wire clk_out;
+wire clk_div2;
 //wire spi_clk_out;
 wire spi_clk;
 wire spi_en;
@@ -30,8 +31,18 @@ wire [15:0] gpio_ps;
 wire [15:0] gpio_ts;
 wire [15:0] gpio_dr;
 
+clk_div clk_div
+  (
+ // Clock in ports
+  .clk_in1(clk),
+  // Clock out ports  
+  .clk_out1(clk_div2),
+  // Status and control signals               
+  .reset(~reset) 
+  );
+
 chip_io chip_io(
-            .clk(clk),
+            .clk(clk_div2),
             .clk_out(clk_out),
             .reset(reset),
             .reset_out(reset_out),

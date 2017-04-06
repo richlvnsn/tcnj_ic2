@@ -21,6 +21,3 @@ create_clock -period 20.000 -name clk [get_ports clk]
 #create_generated_clock -name {chip/router/p_1_in1_in[1]} -source [get_ports clk] -divide_by 1 [get_pins {chip/router/int_imem_haddr_read_reg[15]/Q}]
 
 
-create_generated_clock -name clk_div2 -source [get_ports clk] -multiply_by 2 [get_ports clk]
-
-
