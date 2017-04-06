@@ -1,4 +1,7 @@
-set_property PACKAGE_PIN P15 [get_ports clk]
+# external signal generator
+#set_property PACKAGE_PIN P15 [get_ports clk]
+# Nexys 4 crystal oscillator
+set_property PACKAGE_PIN E3 [get_ports clk]
 set_property PACKAGE_PIN F14 [get_ports miso]
 set_property PACKAGE_PIN D17 [get_ports mosi_out]
 set_property PACKAGE_PIN C12 [get_ports reset]
@@ -43,5 +46,6 @@ set_property IOSTANDARD LVCMOS33 [get_ports {gpio_input[13]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {gpio_input[14]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {gpio_input[15]}]
 #set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets clk_IBUF]
+
 
 
