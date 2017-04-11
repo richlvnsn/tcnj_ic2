@@ -23,22 +23,9 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
     output reg rf_status;
     output reg [31:0] rf_currcount = 0;
     output reg rf_int;
-    
-    //On start trigger
-    always @(posedge ro_trig_start)
-        begin
-            rf_status <= 1'b1;
-        end 
-    
-    //On halt trigger
-    always @(posedge ro_trig_halt)
-    begin
-        rf_status <= 1'b0;
-        rf_currcount <= 1'b0;
-    end
-    
+
     always @(posedge clk)
-    begin
+    begin          
         //Reset Triggers
         if (reset)
             begin
@@ -50,6 +37,13 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
 	    	if (rf_int)
             	rf_int <= 1'b0;
 
+            if (ro_trig_start)  //On Trigger Start
+                rf_status <= 1'b1;
+            else if (ro_trig_halt) begin //On Trigger Halt
+                rf_status <= 0;
+                rf_currcount <= 0;
+            end
+            
 	        if (rf_status)	//If Status is Running
 	        begin
 	            if (ro_mode) //If Continuous
