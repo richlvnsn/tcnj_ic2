@@ -109,12 +109,22 @@ wire dram3_rwn;
 //wire [15:0] rf_gpio_datareg;
 //wire [15:0] rf_gpio_tristate;
 wire [15:0] rf_gpio_interrupt_mask;
+wire trig_start;
+wire trig_halt;
+wire mode;
+wire [31:0] termcount;
+wire status;
+wire [31:0] currcount;
+
+// Timer connections
+wire rf_int;
 
 // Implementing the modules
 
 // RISC-V Core
 
 assign htif_reset = ~(core_rst && reset);
+assign ext_interrupts[0:0] = rf_int;
 vscale_core core(   .clk(clk),
                     .ext_interrupts(ext_interrupts),
                     // Router (Instruction Memory AHB Lines)
@@ -293,9 +303,26 @@ register register(  .clk(clk),
                     .rdata(reg_read),
                     .rf_gpio_datareg(rf_gpio_datareg),
                     .rf_gpio_tristate(rf_gpio_tristate),
-                    .rf_gpio_interrupt_mask(rf_gpio_interrupt_mask)
+                    .rf_gpio_interrupt_mask(rf_gpio_interrupt_mask),
+                    .rf_trig_start(trig_start),
+                    .rf_trig_halt(trig_halt),
+                    .rf_mode(mode),
+                    .rf_termcount(termcount),
+                    .ro_status(status),
+                    .ro_currcount(currcount)
 );
 
+// Timer
+timing timer(   .clk(clk),
+                .reset(~reset), 
+                .ro_trig_start(trig_start),
+                .ro_trig_halt(trig_halt),
+                .ro_mode(mode),
+                .ro_termcount(termcount),
+                .rf_status(status),
+                .rf_currcount(currcount),
+                .rf_int(rf_int)
+);
 
 // SPI Loader
 spi_loader spi( .clk(clk),
