@@ -37,11 +37,13 @@ module timing(clk, reset, ro_trig_start, ro_trig_halt, ro_mode, ro_termcount, rf
 	    	if (rf_int)
             	rf_int <= 1'b0;
 
-            if (ro_trig_start)  //On Trigger Start
-                rf_status <= 1'b1;
+            if (ro_trig_start && !rf_status)  //On Trigger Start
+                begin
+                    rf_status <= 1'b1;
+                    rf_currcount <= 0;
+                end
             else if (ro_trig_halt) begin //On Trigger Halt
                 rf_status <= 0;
-                rf_currcount <= 0;
             end
             
 	        if (rf_status)	//If Status is Running
