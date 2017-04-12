@@ -46,3 +46,7 @@ create_clock -period 10.000 -name clk [get_ports clk]
 #create_generated_clock -name chip/router/reg_rwn -source [get_pins clk_div/mmcm_adv_inst/CLKOUT0] -divide_by 1 [get_pins chip/router/reg_rwn_reg/Q]
 #create_generated_clock -name {chip/router/rf_gpio_interrupt_mask_reg[7][0]} -source [get_pins clk_div/mmcm_adv_inst/CLKOUT0] -divide_by 1 [get_pins {chip/router/reg_addr_reg[0]/Q}]
 #create_generated_clock -name {chip/router/rf_gpio_interrupt_mask_reg[7][1]} -source [get_pins clk_div/mmcm_adv_inst/CLKOUT0] -divide_by 1 [get_pins {chip/router/reg_addr_reg[1]/Q}]
+
+set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
+set_property BITSTREAM.CONFIG.CONFIGRATE 33 [current_design]
+set_property CONFIG_MODE SPIx4 [current_design]
