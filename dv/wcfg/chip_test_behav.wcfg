@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="7871129933211fs"></ZoomStartTime>
-      <ZoomEndTime time="7871157234566fs"></ZoomEndTime>
-      <Cursor1Time time="7871145000000fs"></Cursor1Time>
+      <ZoomStartTime time="19924811453942fs"></ZoomStartTime>
+      <ZoomEndTime time="19924832730293fs"></ZoomEndTime>
+      <Cursor1Time time="19924815000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="236"></NameColumnWidth>
-      <ValueColumnWidth column_width="164"></ValueColumnWidth>
+      <ValueColumnWidth column_width="160"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="21" />
+   <WVObjectSize size="22" />
    <wvobject type="logic" fp_name="/chip_test/reset">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
@@ -59,6 +59,40 @@
    <wvobject type="array" fp_name="/chip_test/uut/gpio_input">
       <obj_property name="ElementShortName">gpio_input[15:0]</obj_property>
       <obj_property name="ObjectShortName">gpio_input[15:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group131">
+      <obj_property name="label">Timer</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/ro_trig_start">
+         <obj_property name="ElementShortName">ro_trig_start</obj_property>
+         <obj_property name="ObjectShortName">ro_trig_start</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/ro_trig_halt">
+         <obj_property name="ElementShortName">ro_trig_halt</obj_property>
+         <obj_property name="ObjectShortName">ro_trig_halt</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/ro_mode">
+         <obj_property name="ElementShortName">ro_mode</obj_property>
+         <obj_property name="ObjectShortName">ro_mode</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/timer/ro_termcount">
+         <obj_property name="ElementShortName">ro_termcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_termcount[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/rf_status">
+         <obj_property name="ElementShortName">rf_status</obj_property>
+         <obj_property name="ObjectShortName">rf_status</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/timer/rf_currcount">
+         <obj_property name="ElementShortName">rf_currcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_currcount[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/rf_int">
+         <obj_property name="ElementShortName">rf_int</obj_property>
+         <obj_property name="ObjectShortName">rf_int</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group72">
       <obj_property name="label">Registers</obj_property>
@@ -112,10 +146,30 @@
          <obj_property name="ElementShortName">wdata[31:0]</obj_property>
          <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
       </wvobject>
-   </wvobject>
-   <wvobject type="logic" fp_name="/chip_test/uut/chip/spi/core_rst">
-      <obj_property name="ElementShortName">core_rst</obj_property>
-      <obj_property name="ObjectShortName">core_rst</obj_property>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/ro_status">
+         <obj_property name="ElementShortName">ro_status</obj_property>
+         <obj_property name="ObjectShortName">ro_status</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/ro_currcount">
+         <obj_property name="ElementShortName">ro_currcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_currcount[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/rf_trig_start">
+         <obj_property name="ElementShortName">rf_trig_start</obj_property>
+         <obj_property name="ObjectShortName">rf_trig_start</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/rf_trig_halt">
+         <obj_property name="ElementShortName">rf_trig_halt</obj_property>
+         <obj_property name="ObjectShortName">rf_trig_halt</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/rf_mode">
+         <obj_property name="ElementShortName">rf_mode</obj_property>
+         <obj_property name="ObjectShortName">rf_mode</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rf_termcount">
+         <obj_property name="ElementShortName">rf_termcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_termcount[31:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group33">
       <obj_property name="label">Core Signals</obj_property>
@@ -137,6 +191,10 @@
          <obj_property name="ElementShortName">inst_read[31:0]</obj_property>
          <obj_property name="ObjectShortName">inst_read[31:0]</obj_property>
       </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/uut/chip/spi/core_rst">
+      <obj_property name="ElementShortName">core_rst</obj_property>
+      <obj_property name="ObjectShortName">core_rst</obj_property>
    </wvobject>
    <wvobject type="group" fp_name="group234">
       <obj_property name="label">Stack</obj_property>

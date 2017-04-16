@@ -129,7 +129,7 @@ always @(posedge clk)
                             rf_mode <= wdata[0];
                         end
                         
-                    4'b1100: begin
+                    4'b1010: begin
                        if (wben[0])
                            rf_termcount[7:0] <= wdata[7:0];
                        if (wben[1])
