@@ -61,6 +61,7 @@ always @(*)
                 4'b1010: rdata <= rf_termcount;
                 4'b1011: rdata <= {31'b0, ro_status};
                 4'b1100: rdata <= ro_currcount;
+                default: rdata <= 0;
             endcase
         end
     end
