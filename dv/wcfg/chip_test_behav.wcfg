@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="chip_test_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="chip_test" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="19924811453942fs"></ZoomStartTime>
+      <ZoomEndTime time="19924832730293fs"></ZoomEndTime>
+      <Cursor1Time time="19924815000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="236"></NameColumnWidth>
+      <ValueColumnWidth column_width="160"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject type="logic" fp_name="/chip_test/reset">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/w">
+      <obj_property name="ElementShortName">w</obj_property>
+      <obj_property name="ObjectShortName">w</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/hold">
+      <obj_property name="ElementShortName">hold</obj_property>
+      <obj_property name="ObjectShortName">hold</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/vcc">
+      <obj_property name="ElementShortName">vcc</obj_property>
+      <obj_property name="ObjectShortName">vcc</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/vss">
+      <obj_property name="ElementShortName">vss</obj_property>
+      <obj_property name="ObjectShortName">vss</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/spi_clk">
+      <obj_property name="ElementShortName">spi_clk</obj_property>
+      <obj_property name="ObjectShortName">spi_clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/mosi">
+      <obj_property name="ElementShortName">mosi</obj_property>
+      <obj_property name="ObjectShortName">mosi</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/miso">
+      <obj_property name="ElementShortName">miso</obj_property>
+      <obj_property name="ObjectShortName">miso</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/ss">
+      <obj_property name="ElementShortName">ss</obj_property>
+      <obj_property name="ObjectShortName">ss</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/chip_test/uut/gpio_input">
+      <obj_property name="ElementShortName">gpio_input[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_input[15:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group131">
+      <obj_property name="label">Timer</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/ro_trig_start">
+         <obj_property name="ElementShortName">ro_trig_start</obj_property>
+         <obj_property name="ObjectShortName">ro_trig_start</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/ro_trig_halt">
+         <obj_property name="ElementShortName">ro_trig_halt</obj_property>
+         <obj_property name="ObjectShortName">ro_trig_halt</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/ro_mode">
+         <obj_property name="ElementShortName">ro_mode</obj_property>
+         <obj_property name="ObjectShortName">ro_mode</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/timer/ro_termcount">
+         <obj_property name="ElementShortName">ro_termcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_termcount[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/rf_status">
+         <obj_property name="ElementShortName">rf_status</obj_property>
+         <obj_property name="ObjectShortName">rf_status</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/timer/rf_currcount">
+         <obj_property name="ElementShortName">rf_currcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_currcount[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/timer/rf_int">
+         <obj_property name="ElementShortName">rf_int</obj_property>
+         <obj_property name="ObjectShortName">rf_int</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group72">
+      <obj_property name="label">Registers</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/ro_gpio_pinstate">
+         <obj_property name="ElementShortName">ro_gpio_pinstate[15:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_gpio_pinstate[15:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rf_gpio_tristate">
+         <obj_property name="ElementShortName">rf_gpio_tristate[15:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_gpio_tristate[15:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rf_gpio_interrupt_mask">
+         <obj_property name="ElementShortName">rf_gpio_interrupt_mask[15:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_gpio_interrupt_mask[15:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/ro_cname">
+         <obj_property name="ElementShortName">ro_cname[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_cname[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/ro_cversion">
+         <obj_property name="ElementShortName">ro_cversion[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_cversion[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rf_scratch">
+         <obj_property name="ElementShortName">rf_scratch[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_scratch[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rf_gpio_datareg">
+         <obj_property name="ElementShortName">rf_gpio_datareg[15:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_gpio_datareg[15:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/addr">
+         <obj_property name="ElementShortName">addr[5:2]</obj_property>
+         <obj_property name="ObjectShortName">addr[5:2]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/r_wn">
+         <obj_property name="ElementShortName">r_wn</obj_property>
+         <obj_property name="ObjectShortName">r_wn</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/wben">
+         <obj_property name="ElementShortName">wben[3:0]</obj_property>
+         <obj_property name="ObjectShortName">wben[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rdata">
+         <obj_property name="ElementShortName">rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/wdata">
+         <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/ro_status">
+         <obj_property name="ElementShortName">ro_status</obj_property>
+         <obj_property name="ObjectShortName">ro_status</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/ro_currcount">
+         <obj_property name="ElementShortName">ro_currcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ro_currcount[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/rf_trig_start">
+         <obj_property name="ElementShortName">rf_trig_start</obj_property>
+         <obj_property name="ObjectShortName">rf_trig_start</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/rf_trig_halt">
+         <obj_property name="ElementShortName">rf_trig_halt</obj_property>
+         <obj_property name="ObjectShortName">rf_trig_halt</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/register/rf_mode">
+         <obj_property name="ElementShortName">rf_mode</obj_property>
+         <obj_property name="ObjectShortName">rf_mode</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/register/rf_termcount">
+         <obj_property name="ElementShortName">rf_termcount[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rf_termcount[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group33">
+      <obj_property name="label">Core Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/pipeline/PC_IF">
+         <obj_property name="ElementShortName">PC_IF[31:0]</obj_property>
+         <obj_property name="ObjectShortName">PC_IF[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/pipeline/inst_DX">
+         <obj_property name="ElementShortName">inst_DX[31:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_DX[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/pipeline/regfile/data[2]">
+         <obj_property name="ElementShortName">[2][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[2][31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/inst_read">
+         <obj_property name="ElementShortName">inst_read[31:0]</obj_property>
+         <obj_property name="ObjectShortName">inst_read[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/uut/chip/spi/core_rst">
+      <obj_property name="ElementShortName">core_rst</obj_property>
+      <obj_property name="ObjectShortName">core_rst</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group234">
+      <obj_property name="label">Stack</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram1/memory_array[4089]">
+         <obj_property name="ElementShortName">[4089][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4089][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram0/memory_array[4089]">
+         <obj_property name="ElementShortName">[4089][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4089][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram1/memory_array[4090]">
+         <obj_property name="ElementShortName">[4090][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4090][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram0/memory_array[4090]">
+         <obj_property name="ElementShortName">[4090][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4090][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram1/memory_array[4091]">
+         <obj_property name="ElementShortName">[4091][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4091][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram0/memory_array[4091]">
+         <obj_property name="ElementShortName">[4091][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4091][7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group79">
+      <obj_property name="label">Core Registers</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/pipeline/regfile/data">
+         <obj_property name="ElementShortName">data[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">data[31:0][31:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group111">
+      <obj_property name="label">DMEM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_haddr">
+         <obj_property name="ElementShortName">dmem_haddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_haddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_hwdata">
+         <obj_property name="ElementShortName">dmem_hwdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hwdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_hrdata">
+         <obj_property name="ElementShortName">dmem_hrdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hrdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/core/dmem_hwrite">
+         <obj_property name="ElementShortName">dmem_hwrite</obj_property>
+         <obj_property name="ObjectShortName">dmem_hwrite</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_hsize">
+         <obj_property name="ElementShortName">dmem_hsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_hburst">
+         <obj_property name="ElementShortName">dmem_hburst[2:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hburst[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/core/dmem_hmastlock">
+         <obj_property name="ElementShortName">dmem_hmastlock</obj_property>
+         <obj_property name="ObjectShortName">dmem_hmastlock</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_hprot">
+         <obj_property name="ElementShortName">dmem_hprot[3:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hprot[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_htrans">
+         <obj_property name="ElementShortName">dmem_htrans[1:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_htrans[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/core/dmem_hready">
+         <obj_property name="ElementShortName">dmem_hready</obj_property>
+         <obj_property name="ObjectShortName">dmem_hready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/dmem_hresp">
+         <obj_property name="ElementShortName">dmem_hresp[0:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hresp[0:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/chip_test/uut/chip/router/int_haddr">
+      <obj_property name="ElementShortName">int_haddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_haddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group45">
+      <obj_property name="label">IMEM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_haddr">
+         <obj_property name="ElementShortName">imem_haddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_haddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_hrdata">
+         <obj_property name="ElementShortName">imem_hrdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_hrdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/core/imem_hwrite">
+         <obj_property name="ElementShortName">imem_hwrite</obj_property>
+         <obj_property name="ObjectShortName">imem_hwrite</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_hsize">
+         <obj_property name="ElementShortName">imem_hsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_hsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_hburst">
+         <obj_property name="ElementShortName">imem_hburst[2:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_hburst[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/core/imem_hmastlock">
+         <obj_property name="ElementShortName">imem_hmastlock</obj_property>
+         <obj_property name="ObjectShortName">imem_hmastlock</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_hprot">
+         <obj_property name="ElementShortName">imem_hprot[3:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_hprot[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_htrans">
+         <obj_property name="ElementShortName">imem_htrans[1:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_htrans[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_hwdata">
+         <obj_property name="ElementShortName">imem_hwdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_hwdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/core/imem_hready">
+         <obj_property name="ElementShortName">imem_hready</obj_property>
+         <obj_property name="ObjectShortName">imem_hready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/core/imem_hresp">
+         <obj_property name="ElementShortName">imem_hresp[0:0]</obj_property>
+         <obj_property name="ObjectShortName">imem_hresp[0:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/chip_test/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group56">
+      <obj_property name="label">SPI AHB</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_haddr">
+         <obj_property name="ElementShortName">spi_haddr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_haddr[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_hwdata">
+         <obj_property name="ElementShortName">spi_hwdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_hwdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_hprot">
+         <obj_property name="ElementShortName">spi_hprot[3:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_hprot[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_hsize">
+         <obj_property name="ElementShortName">spi_hsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_hsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_hburst">
+         <obj_property name="ElementShortName">spi_hburst[2:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_hburst[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_htrans">
+         <obj_property name="ElementShortName">spi_htrans[1:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_htrans[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/router/spi_hwrite">
+         <obj_property name="ElementShortName">spi_hwrite</obj_property>
+         <obj_property name="ObjectShortName">spi_hwrite</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/router/spi_hmastlock">
+         <obj_property name="ElementShortName">spi_hmastlock</obj_property>
+         <obj_property name="ObjectShortName">spi_hmastlock</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/spi_hrdata">
+         <obj_property name="ElementShortName">spi_hrdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_hrdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/router/spi_hready">
+         <obj_property name="ElementShortName">spi_hready</obj_property>
+         <obj_property name="ObjectShortName">spi_hready</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/router/spi_hresp">
+         <obj_property name="ElementShortName">spi_hresp</obj_property>
+         <obj_property name="ObjectShortName">spi_hresp</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/iram0/memory_array[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/iram1/memory_array[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/iram2/memory_array[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/iram3/memory_array[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/iram0/memory_array[1]">
+         <obj_property name="ElementShortName">[1][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[1][7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group78">
+      <obj_property name="label">RAM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram1/memory_array[4091]">
+         <obj_property name="ElementShortName">[4091][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4091][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram0/memory_array[4091]">
+         <obj_property name="ElementShortName">[4091][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4091][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/chip_test/uut/chip/dram0/r_wn">
+         <obj_property name="ElementShortName">r_wn</obj_property>
+         <obj_property name="ObjectShortName">r_wn</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram0/address">
+         <obj_property name="ElementShortName">address[11:0]</obj_property>
+         <obj_property name="ObjectShortName">address[11:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram1/data_out">
+         <obj_property name="ElementShortName">data_out[7:0]</obj_property>
+         <obj_property name="ObjectShortName">data_out[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/dram0/data_out">
+         <obj_property name="ElementShortName">data_out[7:0]</obj_property>
+         <obj_property name="ObjectShortName">data_out[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/dmem_hwdata">
+         <obj_property name="ElementShortName">dmem_hwdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dmem_hwdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/data_read">
+         <obj_property name="ElementShortName">data_read[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_read[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/chip_test/uut/chip/router/reg_read">
+         <obj_property name="ElementShortName">reg_read[31:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_read[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

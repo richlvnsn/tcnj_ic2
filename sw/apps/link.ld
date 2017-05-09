@@ -13,6 +13,7 @@ SECTIONS
 *(.text)
 }
 /* data: Initialized data segment */
+. = 0x4000;
 .data :
 {
 *(.data)
