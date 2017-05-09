@@ -18,7 +18,6 @@ int main() {
 	while(1)
 	{
 		*p = score + dotPos;
-		//checkButton1(p, pinState, dotPos);
 		for (int i = 0; i < iter; i++)
 		{
 			checkButton1(p, pinState, dotPos, score);
@@ -50,7 +49,6 @@ int main() {
 		{
 			right = 1;
 		}
-		//delay(25000000);
 	}
 }
 

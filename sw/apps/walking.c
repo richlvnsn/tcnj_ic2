@@ -3,17 +3,6 @@
 
 void delay();
 
-/*
-addi - add immediate
-slli - shift logical left immediate
-li/lui - load immediate/upper immediate
-lw - load word
-sw - store word
-bne - branch not equal
-bnez - branch not equal zero
-j
-*/
-
 int main() {
 	// Writing all 1s to tristate register
 	int *p = (int*) TRISTATE;

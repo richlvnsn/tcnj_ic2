@@ -28,13 +28,6 @@ int main() {
 	*t = 1;
 	*t = 0;
 
-	/*t = (int*) CURRENTCOUNT;
-	//t = (int*) STATUS;
-	int count = 0;
-
-	int *halt = (int*) TRIGHALT;
-	int *status = (int*) STATUS;
-	int *start = (int*) TRIGSTART;*/
 	while(1)
 	{
 		*p = 1;
