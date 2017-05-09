@@ -6,13 +6,14 @@ asmfiles = delay.s
 objdump = riscv32-unknown-elf-objdump
 elf2hex = elf2hex 8 1024
 
-all : assemble compile dump
+all : assemble compile dump hex
 
 assemble: ; $(foreach src,$(SRC), $(cc) -S $(src) &&) :
 
 compile: ; riscv32-unknown-elf-gcc -c crt.s
+	riscv32-unknown-elf-gcc -c interrupt.s
 	$(foreach src,$(SRC), $(cc) $(asmfiles) $(cflags) -o $(src:.c=) $(src:.c=.s) &&) :
-	rm crt.o
+	rm crt.o interrupt.o
 
 dump: ; -$(foreach src,$(SRC), $(objdump) -d $(src:.c=) > $(src:.c=.dump) &&) :
 
